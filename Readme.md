@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Елена Кунина](https://up.htmlacademy.ru/javascript/12/user/234524).
-* Наставник: `Неизвестно`.
+* Наставник: 'Сама себе режиссер'.
 
 ---
 
