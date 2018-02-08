@@ -19,15 +19,27 @@ var MAX_ROOMS_NUMBER = 5;
 var MIN_GUEST_NUMBER = 1;
 var MAX_GUEST_NUMBER = 100;
 var SYMBOL_OF_RUBLE = String.fromCharCode(8381);
-var TYPE_OF_OFFER = {
-  flat: 'Большая уютная квартира',
-  flat: 'Маленькая неуютная квартира',
-  house: 'Огромный прекрасный дворец',
-  house: 'Маленький ужасный дворец',
-  house: 'Красивый гостевой домик',
-  house: 'Некрасивый негостеприимный домик',
-  bungalo: 'Уютное бунгало далеко от моря', 
-  bungalo: 'Неуютное бунгало по колено в воде'
+
+var getTypeOfOffer = function (title) {
+  var type;
+  switch (title) {
+    case 'Большая уютная квартира':
+      type = 'flat';
+      break;
+    case 'Маленькая неуютная квартира':
+      type = 'flat';
+      break;
+    case 'Уютное бунгало далеко от моря':
+      type = 'bungalo';
+      break;
+    case 'Неуютное бунгало по колено в воде':
+      type = 'bungalo';
+      break;
+    default:
+      type = 'house';
+      break;
+  }
+  return type;
 };
 
 var getRandomItem = function (array) {
@@ -42,17 +54,41 @@ var getRandomInt = function (min, max) {
 
 var getRandomFeatures = function () {
   var randomFeatures = [];
-  for (var i = 0; i < getRandomItem(OFFERS_FEATURES); i++) {
+  for (var i = 0; i < getRandomInt(0, OFFERS_FEATURES.length); i++) {
     var randomFeature = OFFERS_FEATURES[i];
     randomFeatures.push(randomFeature);
   }
   return randomFeatures;
 };
 
+var randomFeatures = getRandomFeatures();
+
+var featureTemplate = document.querySelector('template').content.querySelector('.popup__features li');
+
+var renderFeature = function (feature) {
+  var featureElement = featureTemplate.cloneNode();
+
+  featureTemplate.textContent = feature;
+
+  if (feature !== 'wifi') {
+    featureElement.classList.remove('feature--wifi');
+    featureElement.classList.add('feature--' + feature);
+  }
+  return featureElement;
+};
+
+var renderOfferFeatures = function () {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < randomFeatures.length; i++) {
+    fragment.appendChild(renderFeature(randomFeatures[i]));
+  }
+  return fragment;
+};
+
 var userMap = document.querySelector('.map');
 userMap.classList.remove('map--faded');
 
-var generateOffers = function () {
+var generateUsersOffers = function () {
   var usersOffers = [];
   for (var i = 0; i < USERS_NUMBER; i++) {
     var xCoordinate = getRandomInt(MIN_X, MAX_X);
@@ -66,7 +102,7 @@ var generateOffers = function () {
         title: OFFERS_TITLES[i],
         address: xCoordinate + ', ' + yCoordinate,
         price: getRandomInt(MIN_PRICE, MAX_PRICE),
-        type: TYPE_OF_OFFER[i],
+        type: getTypeOfOffer(OFFERS_TITLES[i]),
         rooms: getRandomInt(MIN_ROOMS_NUMBER, MAX_ROOMS_NUMBER),
         guests: getRandomInt(MIN_GUEST_NUMBER, MAX_GUEST_NUMBER),
         checkin: getRandomItem(CHECKIN_CHECKOUT_TIME),
@@ -86,25 +122,30 @@ var generateOffers = function () {
   return usersOffers;
 };
 
-var usersOffers = generateOffers();
+var usersOffers = generateUsersOffers();
 
 var offerTemplate = document.querySelector('template').content.querySelector('article.map__card');
 
 var renderOffer = function (userOffer) {
   var offerElement = offerTemplate.cloneNode(true);
+
   offerElement.querySelector('.popup__features').innerHTML = '';
   offerElement.querySelector('h3').textContent = userOffer.offer.title;
   offerElement.querySelector('small').textContent = userOffer.offer.address;
   offerElement.querySelector('.popup__price').textContent = userOffer.offer.price + ' ' + SYMBOL_OF_RUBLE + '/ночь';
-  offerElement.querySelector('h4').textContent = getTypeOfOffer();
-  offerElement.querySelector('p:nth-of-type(3)').textContent = userOffer.offer.rooms + ' ' + userOffer.offer.guests;
+  offerElement.querySelector('h4').textContent = getTypeOfOffer(userOffer.offer.title);
+  offerElement.querySelector('p:nth-of-type(3)').textContent = userOffer.offer.rooms + ' комнаты для ' + userOffer.offer.guests + ' гостей';
   offerElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + userOffer.offer.checkin + ', выезд до ' + userOffer.offer.checkout;
-  offerElement.querySelector('.popup__features').textContent = getRandomFeatures();
+  offerElement.querySelector('.popup__features').appendChild(renderOfferFeatures(userOffer.offer.features));
   offerElement.querySelector('p:nth-of-type(5)').textContent = userOffer.offer.description;
   offerElement.querySelector('.popup__avatar').src = userOffer.author.avatar;
 
   return offerElement;
 };
+
+var filterContainerElement = userMap.querySelector('.map__filters-container');
+var offerElement = renderOffer(usersOffers[0]);
+userMap.insertBefore(offerElement, filterContainerElement);
 
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 var similarPins = document.querySelector('.map__pins');
@@ -129,7 +170,3 @@ var renderSimilarPins = function () {
 };
 
 renderSimilarPins();
-
-var filterContainerElement = userMap.querySelector('.map__filters-container');
-var offerElement = renderOffer();
-userMap.insertBefore(offerElement, filterContainerElement);
