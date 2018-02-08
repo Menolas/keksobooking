@@ -85,6 +85,23 @@ var renderOfferFeatures = function () {
   return fragment;
 };
 
+var pictureItemTemplate = document.querySelector('template').content.querySelector('.popup__pictures li');
+
+var renderPicture = function (picture) {
+  var pictureElement = pictureItemTemplate.cloneNode(true);
+
+  pictureItemTemplate.src = picture;
+  return pictureElement;
+};
+
+var renderOfferPictures = function () {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < OFFERS_PHOTOS.length; i++) {
+    fragment.appendChild(renderPicture(OFFERS_PHOTOS[i]));
+  }
+  return fragment;
+};
+
 var userMap = document.querySelector('.map');
 userMap.classList.remove('map--faded');
 
@@ -130,6 +147,7 @@ var renderOffer = function (userOffer) {
   var offerElement = offerTemplate.cloneNode(true);
 
   offerElement.querySelector('.popup__features').innerHTML = '';
+  offerElement.querySelector('.popup__pictures').innerHTML = '';
   offerElement.querySelector('h3').textContent = userOffer.offer.title;
   offerElement.querySelector('small').textContent = userOffer.offer.address;
   offerElement.querySelector('.popup__price').textContent = userOffer.offer.price + ' ' + SYMBOL_OF_RUBLE + '/ночь';
@@ -138,6 +156,7 @@ var renderOffer = function (userOffer) {
   offerElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + userOffer.offer.checkin + ', выезд до ' + userOffer.offer.checkout;
   offerElement.querySelector('.popup__features').appendChild(renderOfferFeatures(userOffer.offer.features));
   offerElement.querySelector('p:nth-of-type(5)').textContent = userOffer.offer.description;
+  offerElement.querySelector('.popup__pictures').appendChild(renderOfferPictures(userOffer.offer.photos));
   offerElement.querySelector('.popup__avatar').src = userOffer.author.avatar;
 
   return offerElement;
