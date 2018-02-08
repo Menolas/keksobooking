@@ -156,7 +156,6 @@ var renderPin = function (userOffer, position) {
   pinElement.style.left = (userOffer.location.x - PIN_WIDTH / 2) + 'px';
   pinElement.style.top = (userOffer.location.y - (PIN_HEIGHT + PIN_TAIL)) + 'px';
   pinElement.querySelector('img').src = userOffer.author.avatar;
-  pinElement.setAttribute('data-position', position);
 
   return pinElement;
 };
@@ -164,7 +163,7 @@ var renderPin = function (userOffer, position) {
 var renderSimilarPins = function () {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < USERS_NUMBER; i++) {
-    fragment.appendChild(renderPin(usersOffers[i], i));
+    fragment.appendChild(renderPin(usersOffers[i]));
   }
   similarPins.appendChild(fragment);
 };
