@@ -169,3 +169,15 @@ var renderSimilarPins = function () {
 };
 
 renderSimilarPins();
+
+// задание 13;
+
+var formElement = document.querySelectorAll('.form__element');
+
+var putDisabled = function () {
+  for (var i = 0; i < formElement.length; i++) {
+    formElement[i].setAttribute('disabled', '');
+  }
+};
+
+putDisabled();
