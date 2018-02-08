@@ -150,7 +150,7 @@ userMap.insertBefore(offerElement, filterContainerElement);
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 var similarPins = document.querySelector('.map__pins');
 
-var renderPin = function (userOffer, position) {
+var renderPin = function (userOffer) {
   var pinElement = pinTemplate.cloneNode(true);
 
   pinElement.style.left = (userOffer.location.x - PIN_WIDTH / 2) + 'px';
