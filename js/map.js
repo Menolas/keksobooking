@@ -305,3 +305,133 @@ similarPins.addEventListener('click', function (event) {
     target = target.parentNode;
   }
 });
+
+// #14 Личный проект: доверяй, но проверяй
+
+// var TITLE_INPUT_MIN_VALUE = 30;
+
+var offerTitleInput = document.getElementById('title');
+var checkInInput = document.getElementById('timein');
+var checkOutInput = document.getElementById('timeout');
+var offerTypeInput = document.getElementById('type');
+var offerPriceInput = document.getElementById('price');
+var offerRoomNumberInput = document.getElementById('room_number');
+var offerNumberOfGuestsInput = document.getElementById('capacity');
+
+var TYPES_AND_PRICES = {
+  'bungalo': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000
+};
+var OFFER_PRICE_VALIDITY = {
+  'bungalo': 'Цена на лачугу не может быть меньше 0 рублей',
+  'flat': 'Цена на квартиру не может быть менее 1000 рублей',
+  'house': 'Цена на дом не может быть менее 5000',
+  'palace': 'Цена на дворец не может быть менее 10000 рублей'
+};
+
+var MAX_NUMBER_OF_ROOMS = 100;
+var MIN_NUMBER_OF_GUESTS = 0;
+var OFFER_CAPACITY = {
+  '1': '1',
+  '2': '2',
+  '3': '3',
+  '100': '0'
+};
+
+var checkMinPrice = function (event) {
+  offerPriceInput.min = TYPES_AND_PRICES[event.currentTarget.value];
+};
+
+offerTypeInput.addEventListener('change', checkMinPrice);
+
+var checkTimeOfCheckIn = function () {
+  checkOutInput.value = checkInInput.value;
+};
+var checkTimeOfCheckout = function () {
+  checkInInput.value = checkOutInput.value;
+};
+checkInInput.addEventListener('change', checkTimeOfCheckIn);
+checkOutInput.addEventListener('change', checkTimeOfCheckout);
+
+var numberOfGuests = offerNumberOfGuestsInput.querySelectorAll('option');
+var removeHidden = function () {
+  for (var i = 0; i < numberOfGuests.length; i++) {
+    if (numberOfGuests[i].hasAttribute('hidden')) {
+      numberOfGuests[i].removeAttribute('hidden');
+    }
+  }
+};
+var removeSelected = function () {
+  for (var i = 0; i < numberOfGuests.length; i++) {
+    if (numberOfGuests[i].hasAttribute('selected')) {
+      numberOfGuests[i].removeAttribute('selected');
+    }
+  }
+};
+var setSelected = function () {
+  for (var i = 0; i < numberOfGuests.length; i++) {
+    if (numberOfGuests[i].value === OFFER_CAPACITY[offerRoomNumberInput.value]) {
+      numberOfGuests[i].setAttribute('selected', '');
+    }
+  }
+};
+var setHidden = function (input) {
+  input.setAttribute('hidden', '');
+};
+
+var setHiddenForValueOfGuests = function () {
+  for (var i = 0; i < numberOfGuests.length; i++) {
+    if (numberOfGuests[i].value > offerRoomNumberInput.value || numberOfGuests[i].value === '0') {
+      setHidden(numberOfGuests[i]);
+    }
+  }
+};
+setHiddenForValueOfGuests();
+
+var setValidValueForGuest = function () {
+  setSelected();
+  if (Number(offerRoomNumberInput.value) === MAX_NUMBER_OF_ROOMS) {
+    for (var i = 0; i < numberOfGuests.length; i++) {
+      if (numberOfGuests[i].value > MIN_NUMBER_OF_GUESTS) {
+        setHidden(numberOfGuests[i]);
+      }
+    }
+  } else {
+    setHiddenForValueOfGuests();
+  }
+};
+
+offerRoomNumberInput.addEventListener('change', function () {
+  removeSelected();
+  removeHidden();
+  setValidValueForGuest();
+});
+
+offerTitleInput.addEventListener('invalid', function () {
+  if (offerTitleInput.validity.tooShort) {
+    offerTitleInput.setCustomValidity('Заголовок объявления должен состоять минимум из 30 символов');
+  } else if (offerTitleInput.validity.tooLong) {
+    offerTitleInput.setCustomValidity('Заголовок объявления не должен превышать 100 символов');
+  } else if (offerTitleInput.validity.valueMissing) {
+    offerTitleInput.setCustomValidity('Обязательное поле');
+  } else {
+    offerTitleInput.setCustomValidity('');
+  }
+});
+
+offerPriceInput.addEventListener('invalid', function () {
+  if (offerPriceInput.validity.rangeUnderflow) {
+    offerPriceInput.setCustomValidity(OFFER_PRICE_VALIDITY[offerTypeInput.value]);
+  } else {
+    offerPriceInput.setCustomValidity('');
+  }
+});
+
+form.addEventListener('invalid', function (event) {
+  var target = event.target;
+  if (target.tagName === 'input') {
+    target.border === '2px solid red';
+  }
+});
