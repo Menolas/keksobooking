@@ -1,17 +1,15 @@
 'use strict';
 
 (function () {
-  var userMap = document.querySelector('.map');
-  var similarPins = document.querySelector('.map__pins');
   var offerHandle = document.querySelector('.map__pin--main');
-  var offerAddressInput = document.getElementById('address');
+  var offerAddressInput = document.querySelector('input[name="address"]');
   var offerXCoord = offerHandle.offsetLeft;
   var offerYCoord = offerHandle.offsetTop;
 
   offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
 
   var onMainPinClick = function () {
-    userMap.classList.remove('map--faded');
+    window.card.userMap.classList.remove('map--faded');
     window.form.enableForm();
     window.pin.renderSimilarPins();
   };
@@ -24,7 +22,7 @@
     window.util.isEnterEvent(evt, onMainPinClick);
   });
 
-  similarPins.addEventListener('click', function (event) {
+  window.pin.similarPins.addEventListener('click', function (event) {
     var target = event.target;
     while (target !== event.currentTarget) {
       if (target.className === 'map__pin') {
@@ -36,8 +34,4 @@
       target = target.parentNode;
     }
   });
-  window.map = {
-    userMap: userMap,
-    similarPins: similarPins
-  };
 })();

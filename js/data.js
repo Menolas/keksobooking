@@ -5,6 +5,7 @@
   var OFFERS_TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
   var OFFERS_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var CHECKIN_CHECKOUT_TIME = ['12:30', '13:00', '14:00'];
+  var OFFERS_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
   var MIN_PRICE = 1000;
   var MAX_PRICE = 1000000;
   var MIN_X = 300;
@@ -70,7 +71,7 @@
           checkout: window.util.getRandomItem(CHECKIN_CHECKOUT_TIME),
           features: randomFeatures,
           description: '',
-          photos: window.card.OFFERS_PHOTOS
+          photos: OFFERS_PHOTOS
         },
 
         location: {
@@ -85,6 +86,7 @@
   var usersOffers = generateUsersOffers();
   window.data = {
     USERS_NUMBER: USERS_NUMBER,
+    OFFERS_PHOTOS: OFFERS_PHOTOS,
     usersOffers: usersOffers,
     randomFeatures: getRandomFeatures,
     getTypeOfOffer: getTypeOfOffer

@@ -2,8 +2,7 @@
 
 (function () {
   var SYMBOL_OF_RUBLE = String.fromCharCode(8381);
-  var OFFERS_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-
+  var userMap = document.querySelector('.map');
   var featureTemplate = document.querySelector('template').content.querySelector('.popup__features li');
 
   var renderFeature = function (feature) {
@@ -36,8 +35,8 @@
 
   var renderOfferPictures = function () {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < OFFERS_PHOTOS.length; i++) {
-      fragment.appendChild(renderPicture(OFFERS_PHOTOS[i]));
+    for (var i = 0; i < window.data.OFFERS_PHOTOS.length; i++) {
+      fragment.appendChild(renderPicture(window.data.OFFERS_PHOTOS[i]));
     }
     return fragment;
   };
@@ -63,29 +62,29 @@
     return offerElement;
   };
 
-  var filterContainerElement = window.map.userMap.querySelector('.map__filters-container');
-  var offerElement = renderOffer(window.data.usersOffers[0]);
+  var filterContainerElement = document.querySelector('.map__filters-container');
+  var offerElement = userMap.querySelector('.map__card');
 
   var onPopupClose = function (evt) {
     window.util.isEscEvent(evt, closePopup);
   };
 
   var closePopup = function () {
-    window.map.userMap.removeChild(offerElement);
+    userMap.removeChild(offerElement);
     window.pin.removeActivePin();
     document.removeEventListener('keydown', onPopupClose);
   };
 
   var getPopup = function (userOffer) {
     offerElement = renderOffer(userOffer);
-    var renderOfferElement = window.map.userMap.querySelector('.popup');
+    var renderOfferElement = userMap.querySelector('.popup');
     if (renderOfferElement) {
-      window.map.userMap.replaceChild(offerElement, renderOfferElement);
+      userMap.replaceChild(offerElement, renderOfferElement);
     } else {
-      window.map.userMap.insertBefore(offerElement, filterContainerElement);
+      userMap.insertBefore(offerElement, filterContainerElement);
     }
     document.addEventListener('keydown', onPopupClose);
-    var popupCloseButton = window.map.userMap.querySelector('.popup__close');
+    var popupCloseButton = userMap.querySelector('.popup__close');
     popupCloseButton.addEventListener('click', function () {
       closePopup();
     });
@@ -94,8 +93,8 @@
     });
   };
   window.card = {
-    OFFERS_PHOTOS: OFFERS_PHOTOS,
-    getPopup: getPopup
+    getPopup: getPopup,
+    userMap: userMap
   };
 })();
 

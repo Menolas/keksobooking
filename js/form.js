@@ -16,7 +16,7 @@
     '100': '0'
   };
   var form = document.querySelector('.notice__form');
-  var formElement = document.querySelectorAll('.form__element');
+  var formElement = form.querySelectorAll('.form__element');
   var offerTitleInput = form.querySelector('input[name="title"]');
   var checkInInput = form.querySelector('select[name="timein"]');
   var checkOutInput = form.querySelector('select[name="timeout"]');
