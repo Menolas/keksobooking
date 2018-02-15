@@ -31,7 +31,7 @@
     },
     renderSimilarPins: function () {
       var fragment = document.createDocumentFragment();
-      for (var i = 0; i < window.data.usersOffers.lendth; i++) {
+      for (var i = 0; i < window.data.usersOffers.length; i++) {
         fragment.appendChild(renderPin(window.data.usersOffers[i], i));
       }
       similarPins.appendChild(fragment);

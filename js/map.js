@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var offerHandle = document.querySelector('.map__pin--main');
-  var offerAddressInput = document.querySelector('input[name="address"]');
+  var offerHandle = window.card.userMap.querySelector('.map__pin--main');
+  var offerAddressInput = window.form.form.querySelector('input[name="address"]');
   var offerXCoord = offerHandle.offsetLeft;
   var offerYCoord = offerHandle.offsetTop;
 

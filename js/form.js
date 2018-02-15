@@ -132,6 +132,7 @@
     }
   });
   window.form = {
+    form: form,
     enableForm: enableForm
   };
 })();
