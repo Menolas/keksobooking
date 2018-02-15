@@ -20,7 +20,7 @@
   var renderOfferFeatures = function (offerFeatures) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < window.data.randomFeatures.length; i++) {
-      fragment.appendChild(renderFeature(offerFeatures[i]));
+      fragment.appendChild(renderFeature(randomFeatures[i]));
     }
     return fragment;
   };
