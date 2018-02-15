@@ -7,13 +7,13 @@
   var similarPins = document.querySelector('.map__pins');
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 
-  var renderPin = function (userOffer, position) {
+  var renderPin = function (userOffer) {
     var pinElement = pinTemplate.cloneNode(true);
 
     pinElement.style.left = (userOffer.location.x - PIN_WIDTH / 2) + 'px';
     pinElement.style.top = (userOffer.location.y - (PIN_HEIGHT + PIN_TAIL)) + 'px';
     pinElement.querySelector('img').src = userOffer.author.avatar;
-    pinElement.setAttribute('data-position', position);
+    // pinElement.setAttribute('data-position', position);
 
     return pinElement;
   };
@@ -35,6 +35,7 @@
         fragment.appendChild(renderPin(window.data.usersOffers[i], i));
       }
       similarPins.appendChild(fragment);
-    }
+    },
+    similarPins: similarPins
   };
 })();
