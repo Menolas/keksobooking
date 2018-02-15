@@ -17,10 +17,10 @@
     return featureElement;
   };
 
-  var renderOfferFeatures = function () {
+  var renderOfferFeatures = function (offerFeatures) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < window.data.randomFeatures.length; i++) {
-      fragment.appendChild(renderFeature(window.data.randomFeatures[i]));
+      fragment.appendChild(renderFeature(offerFeatures[i]));
     }
     return fragment;
   };

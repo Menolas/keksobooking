@@ -14,7 +14,9 @@
     window.pin.renderSimilarPins();
   };
 
-  offerHandle.addEventListener('mouseup', onMainPinClick);
+  offerHandle.addEventListener('mouseup', function () {
+    onMainPinClick();
+  });
 
   offerHandle.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, onMainPinClick);
