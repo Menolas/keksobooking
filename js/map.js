@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var PIN_MAIN_WIDTH = 62;
+  var PIN_MAIN_HEIGHT = 80;
+  var MAX_Y = 500;
+  var MIN_Y = 100;
   var offerHandle = window.card.userMap.querySelector('.map__pin--main');
   var offerAddressInput = window.form.form.querySelector('input[name="address"]');
   var offerXCoord = offerHandle.offsetLeft;
