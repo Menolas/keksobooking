@@ -52,7 +52,7 @@
     offerElement.querySelector('h3').textContent = userOffer.offer.title;
     offerElement.querySelector('small').textContent = userOffer.offer.address;
     offerElement.querySelector('.popup__price').textContent = userOffer.offer.price + ' ' + SYMBOL_OF_RUBLE + '/ночь';
-    offerElement.querySelector('h4').textContent = window.data.getTypeOfOffer(userOffer.offer.title);
+    offerElement.querySelector('h4').textContent = userOffer.offer.type;
     offerElement.querySelector('p:nth-of-type(3)').textContent = userOffer.offer.rooms + ' комнаты для ' + userOffer.offer.guests + ' гостей';
     offerElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + userOffer.offer.checkin + ', выезд до ' + userOffer.offer.checkout;
     offerElement.querySelector('.popup__features').appendChild(renderOfferFeatures(userOffer.offer.features));

@@ -48,8 +48,6 @@
     return randomFeatures;
   };
 
-  var randomFeatures = getRandomFeatures();
-
   var generateUsersOffers = function () {
     var usersOffers = [];
     for (var i = 0; i < USERS_NUMBER; i++) {
@@ -59,7 +57,6 @@
         author: {
           avatar: 'img/avatars/user0' + (i + 1) + '.png'
         },
-
         offer: {
           title: OFFERS_TITLES[i],
           address: xCoordinate + ', ' + yCoordinate,
@@ -69,11 +66,10 @@
           guests: window.util.getRandomInt(MIN_GUEST_NUMBER, MAX_GUEST_NUMBER),
           checkin: window.util.getRandomItem(CHECKIN_CHECKOUT_TIME),
           checkout: window.util.getRandomItem(CHECKIN_CHECKOUT_TIME),
-          features: randomFeatures,
+          features: getRandomFeatures(),
           description: '',
           photos: OFFERS_PHOTOS
         },
-
         location: {
           x: xCoordinate,
           y: yCoordinate
@@ -83,12 +79,10 @@
     }
     return usersOffers;
   };
-  var usersOffers = generateUsersOffers();
   window.data = {
     USERS_NUMBER: USERS_NUMBER,
     OFFERS_PHOTOS: OFFERS_PHOTOS,
-    usersOffers: usersOffers,
-    randomFeatures: getRandomFeatures,
-    getTypeOfOffer: getTypeOfOffer
+    usersOffers: generateUsersOffers(),
+    randomFeatures: getRandomFeatures()
   };
 })();
