@@ -131,6 +131,12 @@
       target.classList.add('invalid');
     }
   });
+
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), function () {
+    });
+    evt.preventDefault();
+  });
   window.form = {
     form: form,
     enableForm: enableForm

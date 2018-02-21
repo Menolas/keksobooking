@@ -18,6 +18,15 @@
     return pinElement;
   };
   var pinElementActive;
+  var pins = document.querySelectorAll('.map-pin');
+
+  var removeOldPins = function () {
+    if (similarPins.pins) {
+      for (var i = 0; i < pins.length; i++) {
+        similarPins.removeChilde(pins[i]);
+      }
+    }
+  };
   window.pin = {
     removeActivePin: function () {
       pinElementActive.classList.remove('map__pin--active');
@@ -29,7 +38,8 @@
       pinElementActive = node;
       pinElementActive.classList.add('map__pin--active');
     },
-    renderSimilarPins: function () {
+    successHandler: function () {
+      removeOldPins();
       var fragment = document.createDocumentFragment();
       for (var i = 0; i < window.data.usersOffers.length; i++) {
         fragment.appendChild(renderPin(window.data.usersOffers[i], i));
