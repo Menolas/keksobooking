@@ -10,6 +10,11 @@ body
     background-color: #f0f0ea;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 h1
 {
     font-size: 29px;

@@ -15,7 +15,7 @@
   var onMainPinClick = function () {
     window.card.userMap.classList.remove('map--faded');
     window.form.enableForm();
-    window.backend.load(window.pin.successHandler, window.backend.errorHandler);
+    window.pin.renderSimilarPins();
   };
 
   offerHandle.addEventListener('mouseup', function () {
@@ -32,7 +32,7 @@
       if (target.className === 'map__pin') {
         window.pin.getHighlight(target);
         var i = target.getAttribute('data-position');
-        window.card.getPopup(window.data.usersOffers[i]);
+        window.card.getPopup(window.backend.load(window.card.successHandler, window.backend.errorHandler)[i]);
         return;
       }
       target = target.parentNode;
