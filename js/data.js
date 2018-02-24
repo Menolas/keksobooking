@@ -1,53 +1,8 @@
 'use strict';
 
 (function () {
-  // var USERS_NUMBER = 8;
-  // var OFFERS_TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-  // var OFFERS_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  // var CHECKIN_CHECKOUT_TIME = ['12:30', '13:00', '14:00'];
-  // var OFFERS_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-  // var MIN_PRICE = 1000;
-  // var MAX_PRICE = 1000000;
-  // var MIN_X = 300;
-  // var MAX_X = 900;
-  // var MIN_Y = 100;
-  // var MAX_Y = 500;
-  // var MIN_ROOMS_NUMBER = 1;
-  // var MAX_ROOMS_NUMBER = 5;
-  // var MIN_GUEST_NUMBER = 1;
-  // var MAX_GUEST_NUMBER = 100;
   var SYMBOL_OF_RUBLE = String.fromCharCode(8381);
-  /*
-  var getTypeOfOffer = function (title) {
-    var type;
-    switch (title) {
-      case 'Большая уютная квартира':
-        type = 'flat';
-        break;
-      case 'Маленькая неуютная квартира':
-        type = 'flat';
-        break;
-      case 'Уютное бунгало далеко от моря':
-        type = 'bungalow';
-        break;
-      case 'Неуютное бунгало по колено в воде':
-        type = 'bungalow';
-        break;
-      default:
-        type = 'house';
-        break;
-    }
-    return type;
-  };
-  var getRandomFeatures = function () {
-    var randomFeatures = [];
-    for (var i = 0; i < window.util.getRandomInt(0, OFFERS_FEATURES.length); i++) {
-      var randomFeature = OFFERS_FEATURES[i];
-      randomFeatures.push(randomFeature);
-    }
-    return randomFeatures;
-  };
-  */
+ 
   var usersOffers = [];
   var successHandler = function (offers) {
     for (var i = 0; i < offers.length; i++) {
