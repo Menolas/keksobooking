@@ -17,6 +17,17 @@
 
     return pinElement;
   };
+
+  var removeOldPins = function () {
+    var pinsBtns = similarPins.querySelectorAll('button[data-position]');
+    console.log(pinsBtns);
+    if (pinsBtns) {
+      for (var i = 0; i < pinsBtns.length; i++) {
+        similarPins.remove(pinsBtns[i]);
+      }
+    }
+  };
+
   var pinElementActive;
   window.pin = {
     removeActivePin: function () {
@@ -29,15 +40,8 @@
       pinElementActive = node;
       pinElementActive.classList.add('map__pin--active');
     },
-    removeOldPins: function () {
-      var pinsBtns = similarPins.querySelectorAll('.map__pin[data-position]');
-      if (pinsBtns) {
-        for (var i = 0; i < pinsBtns.length; i++) {
-          similarPins.remove(pinsBtns[i]);
-        }
-      }
-    },
     renderSimilarPins: function () {
+      removeOldPins();
       var fragment = document.createDocumentFragment();
       for (var i = 0; i < window.data.usersOffers.length; i++) {
         fragment.appendChild(renderPin(window.data.usersOffers[i], i));
