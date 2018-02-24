@@ -132,9 +132,14 @@
     }
   });
 
+  var formSuccessHandler = function () {
+    for (var i = 0; i < formElement.length; i++) {
+      formElement[i].value = '';
+    }
+  };
+
   form.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(form), function () {
-    });
+    window.backend.save(new FormData(form), formSuccessHandler, window.backend.errorHandler);
     evt.preventDefault();
   });
   window.form = {

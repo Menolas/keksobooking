@@ -24,13 +24,6 @@
       xhr.open('GET', URL_LOAD);
       xhr.send();
     },
-    save: function (data, onLoad) {
-      xhr.addEventListener('load', function () {
-        onLoad(xhr.response);
-      });
-      xhr.open('POST', URL_SAVE);
-      xhr.send(data);
-    },
     errorHandler: function (errorMessage) {
       var node = document.createElement('div');
       node.style = 'position: absolute; z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
@@ -39,6 +32,20 @@
       node.style.fontSize = '30px';
       node.textContent = errorMessage;
       document.body.insertAdjacentElement('afterbegin', node);
+    },
+    save: function (data, onLoad, onError) {
+      xhr.addEventListener('load', function () {
+        if (xhr.status >= 200 && xhr.status <= 400) {
+          onLoad(xhr.response);
+        } else {
+          onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        }
+      });
+      xhr.addEventListener('error', function () {
+        onError('Произошла ошибка соединения');
+      });
+      xhr.open('POST', URL_SAVE);
+      xhr.send(data);
     }
   };
 })();

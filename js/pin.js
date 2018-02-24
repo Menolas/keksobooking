@@ -20,7 +20,6 @@
 
   var removeOldPins = function () {
     var pinsBtns = similarPins.querySelectorAll('button[data-position]');
-    console.log(pinsBtns);
     if (pinsBtns) {
       for (var i = 0; i < pinsBtns.length; i++) {
         similarPins.remove(pinsBtns[i]);

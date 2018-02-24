@@ -77,9 +77,7 @@
     }
     return usersOffers;
   };
-  
   window.backend.load(successHandler, window.backend.errorHandler);
-  
   var featureTemplate = document.querySelector('template').content.querySelector('.popup__features li');
 
   var renderFeature = function (feature) {
