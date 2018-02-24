@@ -48,9 +48,8 @@
     return randomFeatures;
   };
   */
-
+  var usersOffers = [];
   var successHandler = function (offers) {
-    var usersOffers = [];
     for (var i = 0; i < offers.length; i++) {
       var userOffer = {
         author: {
@@ -78,9 +77,9 @@
     }
     return usersOffers;
   };
-
-  var usersOffers = window.backend.load(successHandler, window.backend.errorHandler);
-  console.log(usersOffers);
+  
+  window.backend.load(successHandler, window.backend.errorHandler);
+  
   var featureTemplate = document.querySelector('template').content.querySelector('.popup__features li');
 
   var renderFeature = function (feature) {
