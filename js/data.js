@@ -47,39 +47,40 @@
     }
     return randomFeatures;
   };
-  var generateUsersOffers = function () {
+  */
+
+  var successHandler = function (offers) {
     var usersOffers = [];
-    for (var i = 0; i < USERS_NUMBER; i++) {
-      var xCoordinate = window.util.getRandomInt(MIN_X, MAX_X);
-      var yCoordinate = window.util.getRandomInt(MIN_Y, MAX_Y);
+    for (var i = 0; i < offers.length; i++) {
       var userOffer = {
         author: {
-          avatar: 'img/avatars/user0' + (i + 1) + '.png'
+          avatar: offers[i].author.avatar
         },
         offer: {
-          title: OFFERS_TITLES[i],
-          address: xCoordinate + ', ' + yCoordinate,
-          price: window.util.getRandomInt(MIN_PRICE, MAX_PRICE),
-          type: getTypeOfOffer(OFFERS_TITLES[i]),
-          rooms: window.util.getRandomInt(MIN_ROOMS_NUMBER, MAX_ROOMS_NUMBER),
-          guests: window.util.getRandomInt(MIN_GUEST_NUMBER, MAX_GUEST_NUMBER),
-          checkin: window.util.getRandomItem(CHECKIN_CHECKOUT_TIME),
-          checkout: window.util.getRandomItem(CHECKIN_CHECKOUT_TIME),
-          features: getRandomFeatures(),
-          description: '',
-          photos: OFFERS_PHOTOS
+          title: offers[i].offer.title,
+          address: offers[i].location.x + ', ' + offers[i].location.y,
+          price: offers[i].offer.price,
+          type: offers[i].offer.type,
+          rooms: offers[i].offer.rooms,
+          guests: offers[i].offer.guests,
+          checkin: offers[i].offer.checkin,
+          checkout: offers[i].offer.checkout,
+          features: offers[i].offer.features,
+          description: offers[i].offer.description,
+          photos: offers[i].offer.photos
         },
         location: {
-          x: xCoordinate,
-          y: yCoordinate
+          x: offers[i].location.x,
+          y: offers[i].location.y
         }
       };
       usersOffers.push(userOffer);
     }
     return usersOffers;
   };
-  */
 
+  var usersOffers = window.backend.load(successHandler, window.backend.errorHandler);
+  console.log(usersOffers);
   var featureTemplate = document.querySelector('template').content.querySelector('.popup__features li');
 
   var renderFeature = function (feature) {
@@ -138,18 +139,6 @@
 
     return offerElement;
   };
-
-  var successHandler = function (offers) {
-    var usersOffers = [];
-    for (var i = 0; i < offers.length; i++) {
-      var userOffer = renderOffer(offers[i]);
-      usersOffers.push(userOffer);
-    }
-    return usersOffers;
-  };
-
-  var usersOffers = window.backend.load(successHandler, window.backend.successHandler);
-  console.log(usersOffers);
   window.data = {
     usersOffers: usersOffers,
     renderOffer: renderOffer
