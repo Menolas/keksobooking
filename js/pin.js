@@ -17,6 +17,16 @@
 
     return pinElement;
   };
+
+  var removeOldPins = function () {
+    var pinsBtns = similarPins.querySelectorAll('button[data-position]');
+    if (pinsBtns) {
+      for (var i = 0; i < pinsBtns.length; i++) {
+        similarPins.remove(pinsBtns[i]);
+      }
+    }
+  };
+
   var pinElementActive;
   window.pin = {
     removeActivePin: function () {
@@ -30,6 +40,7 @@
       pinElementActive.classList.add('map__pin--active');
     },
     renderSimilarPins: function () {
+      removeOldPins();
       var fragment = document.createDocumentFragment();
       for (var i = 0; i < window.data.usersOffers.length; i++) {
         fragment.appendChild(renderPin(window.data.usersOffers[i], i));
