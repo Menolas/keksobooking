@@ -40,7 +40,7 @@
       pinElementActive.classList.add('map__pin--active');
     },
     renderSimilarPins: function () {
-      removeOldPins();
+      // removeOldPins();
       var fragment = document.createDocumentFragment();
       for (var i = 0; i < window.data.usersOffers.length; i++) {
         fragment.appendChild(renderPin(window.data.usersOffers[i], i));
