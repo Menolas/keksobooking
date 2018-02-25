@@ -19,6 +19,7 @@
   };
 
   offerHandle.addEventListener('mouseup', function () {
+    window.pin.removeOldPins();
     onMainPinClick();
   });
 
