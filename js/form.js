@@ -165,6 +165,10 @@
   });
 
   var formSuccessHandler = function () {
+    var renderOfferElement = window.card.userMap.querySelector('.popup');
+    if (renderOfferElement) {
+      renderOfferElement.remove();
+    }
     offerHandle.style.left = offerXCoord;
     offerHandle.style.top = offerYCoord;
     //offerAddressInput.value = offerHandle.style.left + ', ' + offerHandle.style.top;
