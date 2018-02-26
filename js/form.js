@@ -2,8 +2,8 @@
 
 (function () {
   var offerHandle = window.card.userMap.querySelector('.map__pin--main');
-  var OFFER_HANDLE_START_X = offerHandle.style.left;
-  var OFFER_HANDLE_START_Y = offerHandle.style.top;
+  var offerXCoord = offerHandle.offsetLeft;
+  var offerYCoord = offerHandle.offsetTop;
   var TYPES_AND_PRICES = {
     'bungalow': 0,
     'flat': 1000,
@@ -29,28 +29,38 @@
   var offerRoomNumberInput = form.querySelector('select[name="rooms"]');
   var offerNumberOfGuestsInput = form.querySelector('select[name="capacity"]');
   var offerAddressInput = form.querySelector('input[name="address"]');
-
-  var startInputValues = function () {
-    [].map.call(fillInput, function (it) {
-      return it.value;
-    });
+  
+  offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
+  
+  var startInputValues = [];
+  var getStartInputValues = function () {
+    for (var i = 0; i < fillInput.length; i++) {
+      var startInputValueItem = fillInput[i].value;
+      startInputValues.push(startInputValueItem);
+    }
+    return startInputValues;
   };
-  console.log(startInputValues);
 
-  var getStartValues = function () {
+  var putStartValues = function () {
     for (var i = 0; i < fillInput.length; i++) {
       fillInput[i].value = startInputValues[i];
     }
   };
 
   var putDisabled = function () {
-    offerAddressInput.value = OFFER_HANDLE_START_X + ', ' + OFFER_HANDLE_START_Y;
+    form.classList.add('notice__form--disabled');
     for (var i = 0; i < formElement.length; i++) {
       formElement[i].setAttribute('disabled', '');
     }
   };
 
-  putDisabled();
+  var getStarted = function () {
+    getStartInputValues();
+    putDisabled();
+  };
+
+  getStarted();
+  console.log(startInputValues);
 
   var enableForm = function () {
     form.classList.remove('notice__form--disabled');
@@ -155,9 +165,10 @@
   });
 
   var formSuccessHandler = function () {
-    getStartValues();
-    window.map.offerHandle.style.left = window.map.OFFER_HANDLE_START_X;
-    window.map.offerHandle.style.top = window.map.OFFER_HANDLE_START_y;
+    offerHandle.style.left = offerXCoord;
+    offerHandle.style.top = offerYCoord;
+    //offerAddressInput.value = offerHandle.style.left + ', ' + offerHandle.style.top;
+    putStartValues();
     window.card.userMap.classList.add('map--faded');
     window.pin.removeOldPins();
     putDisabled();

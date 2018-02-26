@@ -9,8 +9,6 @@
   var offerXCoord = offerHandle.offsetLeft;
   var offerYCoord = offerHandle.offsetTop;
 
-  window.form.offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
-
   var onMainPinClick = function () {
     window.card.userMap.classList.remove('map--faded');
     window.form.enableForm();
