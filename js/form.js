@@ -30,18 +30,17 @@
   var offerNumberOfGuestsInput = form.querySelector('select[name="capacity"]');
   var offerAddressInput = form.querySelector('input[name="address"]');
 
-  var getInputValue = function () {
+  var startInputValues = function () {
     [].map.call(fillInput, function (it) {
       return it.value;
     });
   };
-
-  var startInputValues = getInputValue();
+  console.log(startInputValues);
 
   var getStartValues = function () {
-    [].forEach.call(i, fillInput, function (it) {
-      it[i].value = startInputValues[i];
-    });
+    for (var i = 0; i < fillInput.length; i++) {
+      fillInput[i].value = startInputValues[i];
+    }
   };
 
   var putDisabled = function () {
