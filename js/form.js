@@ -164,23 +164,35 @@
     }
   });
 
-  var formSuccessHandler = function () {
-    var renderOfferElement = window.card.userMap.querySelector('.popup');
-    if (renderOfferElement) {
-      renderOfferElement.remove();
+  var features = form.querySelectorAll('.features input');
+  var cleanFeatures = function () {
+    for (var i = 0; i < features.length; i++) {
+      features[i].checked = false;
     }
+  };
+
+  var getConditionBeforeActivation = function () {
+    window.card.closePopup();
     offerHandle.style.left = offerXCoord;
     offerHandle.style.top = offerYCoord;
-    //offerAddressInput.value = offerHandle.style.left + ', ' + offerHandle.style.top;
     putStartValues();
+    cleanFeatures();
     window.card.userMap.classList.add('map--faded');
     window.pin.removeOldPins();
     putDisabled();
+  };
+  
+  var formSuccessHandler = function () {
+    getConditionBeforeActivation();
   };
 
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), formSuccessHandler, window.backend.errorHandler);
     evt.preventDefault();
+  });
+
+  form.addEventListener('reset', function (evt) {
+    getConditionBeforeActivation();
   });
   window.form = {
     offerAddressInput: offerAddressInput,

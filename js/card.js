@@ -10,7 +10,10 @@
   };
 
   var closePopup = function () {
+    var renderOfferElement = userMap.querySelector('.popup');
+    if (renderOfferElement) {
     userMap.removeChild(offerElement);
+    }
     window.pin.removeActivePin();
     document.removeEventListener('keydown', onPopupClose);
   };
@@ -34,6 +37,7 @@
   };
   window.card = {
     getPopup: getPopup,
+    closePopup: closePopup,
     userMap: userMap
   };
 })();
