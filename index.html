@@ -96,7 +96,7 @@
             <div class="notice__preview">
               <img src="img/muffin.png" alt="Аватар пользователя"  width="40" height="44">
             </div>
-            <input type="file" id="avatar">
+            <input type="file" id="avatar" class="fill-input">
             <label class="drop-zone" for="avatar">Загрузите или&nbsp;перетащите сюда фото</label>
             <p class="notice__info">Заполните все обязательные поля, назначьте цену, загрузите фотографии. Придумайте интересное описание. Оно сделает объявление более живым и привлекательным. Получившееся объявление должно давать гостям полное представление о вашем жилье.</p>
           </div>
@@ -105,7 +105,7 @@
 
       <fieldset class="form__element form__element--wide">
         <label for="title">Заголовок объявления</label>
-        <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" 
+        <input class="fill-input" id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" 
                minlength="30" maxlength="100"
                required>
       </fieldset>
@@ -117,7 +117,7 @@
 
       <fieldset class="form__element">
         <label for="type">Тип жилья</label>
-        <select id="type" name="type">
+        <select class="fill-input" id="type" name="type">
           <option value="flat" selected>Квартира</option>
           <option value="bungalo">Лачуга</option>
           <option value="house">Дом</option>
@@ -127,18 +127,18 @@
 
       <fieldset class="form__element">
         <label for="price">Цена за ночь, руб.</label>
-        <input id="price" name="price" type="number" placeholder="5000" 
+        <input class="fill-input" id="price" name="price" type="number" placeholder="5000" 
                max="1000000" required>
       </fieldset>
 
       <fieldset class="form__element">
         <label for="timein">Время заезда и выезда</label>
-        <select id="timein" name="timein">
+        <select class="fill-input" id="timein" name="timein">
           <option value="12:00" selected>После 12</option>
           <option value="13:00">После 13</option>
           <option value="14:00">После 14</option>
         </select>
-        <select id="timeout" name="timeout" title="Time to go out">
+        <select class="fill-input" id="timeout" name="timeout" title="Time to go out">
           <option value="12:00" selected>Выезд до 12</option>
           <option value="13:00">Выезд до 13</option>
           <option value="14:00">Выезд до 14</option>
@@ -147,7 +147,7 @@
 
       <fieldset class="form__element">
         <label for="room_number">Кол-во комнат</label>
-        <select id="room_number" name="rooms">
+        <select class="fill-input" id="room_number" name="rooms">
           <option value="1" selected>1 комната</option>
           <option value="2">2 комнаты</option>
           <option value="3">3 комнаты</option>
@@ -157,10 +157,10 @@
 
       <fieldset class="form__element">
         <label for="capacity">Количество мест</label>
-        <select id="capacity" name="capacity">
-          <option value="3" selected>для 3 гостей</option>
+        <select class="fill-input" id="capacity" name="capacity">
+          <option value="3">для 3 гостей</option>
           <option value="2">для 2 гостей</option>
-          <option value="1">для 1 гостя</option>
+          <option value="1" selected>для 1 гостя</option>
           <option value="0">не для гостей</option>
         </select>
       </fieldset>
@@ -189,14 +189,14 @@
 
       <fieldset class="form__element form__element--wide">
         <label for="description">Описание (не обязательно)</label>
-        <textarea id="description" name="description" placeholder="Здесь расскажите о том, какое ваше жилье замечательное и вообще"></textarea>
+        <textarea class="fill-input" id="description" name="description" placeholder="Здесь расскажите о том, какое ваше жилье замечательное и вообще"></textarea>
       </fieldset>
 
       <fieldset class="form__element form__element--wide">
         <label>Фотографии жилья</label>
         <div class="form__photo-container">
           <div class="upload">
-            <input type="file" id="images">
+            <input class="fill-input" type="file" id="images">
             <label for="images" class="drop-zone">Загрузите или&nbsp;перетащите сюда фото</label>
           </div>
         </div>

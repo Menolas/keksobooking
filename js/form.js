@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var offerHandle = window.card.userMap.querySelector('.map__pin--main');
+  var OFFER_HANDLE_START_X = offerHandle.style.left;
+  var OFFER_HANDLE_START_Y = offerHandle.style.top;
   var TYPES_AND_PRICES = {
     'bungalow': 0,
     'flat': 1000,
@@ -17,6 +20,7 @@
   };
   var form = document.querySelector('.notice__form');
   var formElement = form.querySelectorAll('.form__element');
+  var fillInput = form.querySelectorAll('.fill-input');
   var offerTitleInput = form.querySelector('input[name="title"]');
   var checkInInput = form.querySelector('select[name="timein"]');
   var checkOutInput = form.querySelector('select[name="timeout"]');
@@ -24,8 +28,24 @@
   var offerPriceInput = form.querySelector('input[name="price"]');
   var offerRoomNumberInput = form.querySelector('select[name="rooms"]');
   var offerNumberOfGuestsInput = form.querySelector('select[name="capacity"]');
+  var offerAddressInput = form.querySelector('input[name="address"]');
+
+  var getInputValue = function () {
+    [].map.call(fillInput, function (it) {
+      return it.value;
+    });
+  };
+
+  var startInputValues = getInputValue();
+
+  var getStartValues = function () {
+    [].forEach.call(i, fillInput, function (it) {
+      it[i].value = startInputValues[i];
+    });
+  };
 
   var putDisabled = function () {
+    offerAddressInput.value = OFFER_HANDLE_START_X + ', ' + OFFER_HANDLE_START_Y;
     for (var i = 0; i < formElement.length; i++) {
       formElement[i].setAttribute('disabled', '');
     }
@@ -127,15 +147,21 @@
 
   form.addEventListener('invalid', function (event) {
     var target = event.target;
-    if (target.tagName === 'input') {
-      target.classList.add('invalid');
+    while (target !== event.currentTarget) {
+      if (target.tagName === 'input') {
+        target.classList.add('invalid');
+      }
+      target = target.parentNode;
     }
   });
 
   var formSuccessHandler = function () {
-    for (var i = 0; i < formElement.length; i++) {
-      formElement[i].value = '';
-    }
+    getStartValues();
+    window.map.offerHandle.style.left = window.map.OFFER_HANDLE_START_X;
+    window.map.offerHandle.style.top = window.map.OFFER_HANDLE_START_y;
+    window.card.userMap.classList.add('map--faded');
+    window.pin.removeOldPins();
+    putDisabled();
   };
 
   form.addEventListener('submit', function (evt) {
@@ -143,6 +169,7 @@
     evt.preventDefault();
   });
   window.form = {
+    offerAddressInput: offerAddressInput,
     form: form,
     enableForm: enableForm
   };
