@@ -2,9 +2,8 @@
 
 (function () {
   var SYMBOL_OF_RUBLE = String.fromCharCode(8381);
-  var userMap = document.querySelector('.map');
-  // var filterContainerElement = document.querySelector('.map__filters-container');
 
+  var userMap = document.querySelector('.map');
   var featureTemplate = document.querySelector('template').content.querySelector('.popup__features li');
 
   var renderFeature = function (feature) {
@@ -102,6 +101,7 @@
       window.util.isEnterEvent(evt, closePopup);
     });
   };
+
   window.card = {
     getPopup: getPopup,
     closePopup: closePopup,

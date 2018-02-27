@@ -1,10 +1,7 @@
 'use strict';
 
 (function () {
-  var MAX_SIMILAR_OFFERS = 5;
-
-  var usersOffers = [];
-
+  /*
   var getUsersOffers = function (offers) {
     for (var i = 0; i < offers.length; i++) {
       var userOffer = {
@@ -34,22 +31,23 @@
     return usersOffers;
   };
 
-  var renderSimilarUsersOffers = function (data) {
-    var takeNumber = usersOffers.length > MAX_SIMILAR_OFFERS ? MAX_SIMILAR_OFFERS : usersOffers.length;
-    for (var i = 0; i < takeNumber; i++) {
-      usersOffers.push(getUsersOffers(data[i])[i]);
-    }
-    return usersOffers;
-  };
-  /*
-  var updateUsersOffers = function (usersOffers) {
-
-    var sameTypeHousings = usersOffers.filter(function (it) {
-      return it.offer.type === housingType;
-    });
+    
     getUsersOffers(sameTypeHousings);
   };
   */
+
+   var usersOffers = [];
+
+  var updateUsersOffers = function () {
+    var sameTypeHousings = usersOffers.filter(function (it) {
+      return it.offer.type === housingType;
+    });
+    var samePriceHousings = usersOffers.filter(function (it) {
+      return it.offer.price === housingPrice;
+    })
+
+    window.pin.renderSimilarPins(sameTypeHousings.concat(samePriceHousings));
+  };
 
   // настройка фильтров:
 
@@ -110,12 +108,12 @@
   });
 
   var successHandler = function (data) {
-    // usersOffers = data;
-    renderSimilarUsersOffers(usersOffers);
+    usersOffers = data;
+    updateUsersOffers();
   };
 
-  window.backend.load(successHandler, window.backend.errorHandler);
   window.filters = {
+    successHandler: successHandler,
     usersOffers: usersOffers,
     filterContainerElement: filterContainerElement
   };

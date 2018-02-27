@@ -12,7 +12,7 @@
   var onMainPinClick = function () {
     window.card.userMap.classList.remove('map--faded');
     window.form.enableForm();
-    window.pin.renderSimilarPins();
+    window.backend.load(window.filters.successHandler, window.backend.errorHandler);
   };
 
   offerHandle.addEventListener('mouseup', function () {
