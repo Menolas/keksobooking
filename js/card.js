@@ -3,7 +3,7 @@
 (function () {
   var SYMBOL_OF_RUBLE = String.fromCharCode(8381);
   var userMap = document.querySelector('.map');
-  var filterContainerElement = document.querySelector('.map__filters-container');
+  // var filterContainerElement = document.querySelector('.map__filters-container');
 
   var featureTemplate = document.querySelector('template').content.querySelector('.popup__features li');
 
@@ -91,7 +91,7 @@
     if (renderOfferElement) {
       userMap.replaceChild(offerElement, renderOfferElement);
     } else {
-      userMap.insertBefore(offerElement, filterContainerElement);
+      userMap.insertBefore(offerElement, window.filters.filterContainerElement);
     }
     document.addEventListener('keydown', onPopupClose);
     var popupCloseButton = userMap.querySelector('.popup__close');
