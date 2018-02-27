@@ -29,9 +29,9 @@
   var offerRoomNumberInput = form.querySelector('select[name="rooms"]');
   var offerNumberOfGuestsInput = form.querySelector('select[name="capacity"]');
   var offerAddressInput = form.querySelector('input[name="address"]');
-  
+
   offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
-  
+
   var startInputValues = [];
   var getStartInputValues = function () {
     for (var i = 0; i < fillInput.length; i++) {
@@ -60,7 +60,6 @@
   };
 
   getStarted();
-  console.log(startInputValues);
 
   var enableForm = function () {
     form.classList.remove('notice__form--disabled');
@@ -153,16 +152,18 @@
       offerPriceInput.setCustomValidity('Цена на этот объект не может быть ниже ' + TYPES_AND_PRICES[offerTypeInput.value]);
     }
   });
-
-  form.addEventListener('invalid', function (event) {
+  /*
+  form.addEventListener('keypress', function (event) {
     var target = event.target;
     while (target !== event.currentTarget) {
-      if (target.tagName === 'input') {
-        target.classList.add('invalid');
+      if (target.tagName.toLowerCase() === 'input') {
+        var method = (target.validity.valid) ? 'remove' : 'add';
+        target.classList.[method]('invalid');
       }
       target = target.parentNode;
     }
   });
+  */
 
   var features = form.querySelectorAll('.features input');
   var cleanFeatures = function () {
@@ -173,15 +174,14 @@
 
   var getConditionBeforeActivation = function () {
     window.card.closePopup();
-    offerHandle.style.left = offerXCoord;
-    offerHandle.style.top = offerYCoord;
+    offerHandle.style = '';
     putStartValues();
     cleanFeatures();
     window.card.userMap.classList.add('map--faded');
     window.pin.removeOldPins();
     putDisabled();
   };
-  
+
   var formSuccessHandler = function () {
     getConditionBeforeActivation();
   };
@@ -193,6 +193,7 @@
 
   form.addEventListener('reset', function (evt) {
     getConditionBeforeActivation();
+    evt.preventDefault();
   });
   window.form = {
     offerAddressInput: offerAddressInput,

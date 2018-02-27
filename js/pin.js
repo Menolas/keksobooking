@@ -31,7 +31,9 @@
   window.pin = {
     removeOldPins: removeOldPins,
     removeActivePin: function () {
-      pinElementActive.classList.remove('map__pin--active');
+      if (pinElementActive) {
+        pinElementActive.classList.remove('map__pin--active');
+      }
     },
     getHighlight: function (node) {
       if (pinElementActive) {

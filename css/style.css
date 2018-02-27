@@ -743,7 +743,7 @@ textarea:focus
     width: 140px;
 }
 
-.invalid 
+.notice__form .invalid 
 {
     border: 2px solid red;
 }

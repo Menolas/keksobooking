@@ -4,7 +4,6 @@
   var SYMBOL_OF_RUBLE = String.fromCharCode(8381);
   var userMap = document.querySelector('.map');
   var filterContainerElement = document.querySelector('.map__filters-container');
-  var offerElement = userMap.querySelector('.map__card');
 
   var featureTemplate = document.querySelector('template').content.querySelector('.popup__features li');
 
@@ -43,13 +42,14 @@
   };
 
   var offerTemplate = document.querySelector('template').content.querySelector('article.map__card');
-
+  /*
   var getChecked = function (array, node, fun) {
     if (array.length = 0) {
       node.remove();
     }
     node.appendChild(fun(array));
   };
+  */
 
   var renderOffer = function (userOffer) {
     var offerElement = offerTemplate.cloneNode(true);
@@ -63,13 +63,12 @@
     offerElement.querySelector('h4').textContent = userOffer.offer.type;
     offerElement.querySelector('p:nth-of-type(3)').textContent = userOffer.offer.rooms + ' комнаты для ' + userOffer.offer.guests + ' гостей';
     offerElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + userOffer.offer.checkin + ', выезд до ' + userOffer.offer.checkout;
-    getChecked(userOffer.offer.features, offerElement.querySelector('.popup__features'), renderOfferFeatures);
-    // offerElement.querySelector('.popup__features').appendChild(renderOfferFeatures(userOffer.offer.features));
-   
+    // getChecked(userOffer.offer.features, offerElement.querySelector('.popup__features'), renderOfferFeatures);
+    offerElement.querySelector('.popup__features').appendChild(renderOfferFeatures(userOffer.offer.features));
     offerElement.querySelector('p:nth-of-type(5)').textContent = userOffer.offer.description;
-    getChecked(userOffer.offer.photos, offerElement.querySelector('.popup__pictures'), renderOfferPictures);
-    // offerElement.querySelector('.popup__pictures').appendChild(renderOfferPictures(userOffer.offer.photos));
-   
+    // getChecked(userOffer.offer.photos, offerElement.querySelector('.popup__pictures'), renderOfferPictures);
+    offerElement.querySelector('.popup__pictures').appendChild(renderOfferPictures(userOffer.offer.photos));
+
     return offerElement;
   };
 
@@ -80,14 +79,14 @@
   var closePopup = function () {
     var renderOfferElement = userMap.querySelector('.popup');
     if (renderOfferElement) {
-    userMap.removeChild(offerElement);
+      userMap.removeChild(renderOfferElement);
     }
     window.pin.removeActivePin();
     document.removeEventListener('keydown', onPopupClose);
   };
 
   var getPopup = function (userOffer) {
-    offerElement = renderOffer(userOffer);
+    var offerElement = renderOffer(userOffer);
     var renderOfferElement = userMap.querySelector('.popup');
     if (renderOfferElement) {
       userMap.replaceChild(offerElement, renderOfferElement);
