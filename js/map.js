@@ -30,7 +30,7 @@
       if (target.className === 'map__pin') {
         window.pin.getHighlight(target);
         var i = target.getAttribute('data-position');
-        window.card.getPopup(window.data.usersOffers[i]);
+        window.card.getPopup(window.filters.usersOffers[i]);
         return;
       }
       target = target.parentNode;

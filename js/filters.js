@@ -1,13 +1,57 @@
 'use strict';
 
 (function () {
-  /*
+  var MAX_SIMILAR_OFFERS = 5;
+
   var usersOffers = [];
 
-  var updateUsersOffers = function () {
-    window.data.getUsersOffers(usersOffers);
+  var getUsersOffers = function (offers) {
+    for (var i = 0; i < offers.length; i++) {
+      var userOffer = {
+        author: {
+          avatar: offers[i].author.avatar
+        },
+        offer: {
+          title: offers[i].offer.title,
+          address: offers[i].location.x + ', ' + offers[i].location.y,
+          price: offers[i].offer.price,
+          type: offers[i].offer.type,
+          rooms: offers[i].offer.rooms,
+          guests: offers[i].offer.guests,
+          checkin: offers[i].offer.checkin,
+          checkout: offers[i].offer.checkout,
+          features: offers[i].offer.features,
+          description: offers[i].offer.description,
+          photos: offers[i].offer.photos
+        },
+        location: {
+          x: offers[i].location.x,
+          y: offers[i].location.y
+        }
+      };
+      usersOffers.push(userOffer);
+    }
+    return usersOffers;
+  };
+
+  var renderSimilarUsersOffers = function (data) {
+    var takeNumber = usersOffers.length > MAX_SIMILAR_OFFERS ? MAX_SIMILAR_OFFERS : usersOffers.length;
+    for (var i = 0; i < takeNumber; i++) {
+      usersOffers.push(getUsersOffers(data[i])[i]);
+    }
+    return usersOffers;
+  };
+  /*
+  var updateUsersOffers = function (usersOffers) {
+
+    var sameTypeHousings = usersOffers.filter(function (it) {
+      return it.offer.type === housingType;
+    });
+    getUsersOffers(sameTypeHousings);
   };
   */
+
+  // настройка фильтров:
 
   var filterContainerElement = document.querySelector('.map__filters-container');
 
@@ -17,6 +61,7 @@
   housingTypeFilterElement.addEventListener('change', function (event) {
     var newHousingType = event.currentTarget.value;
     housingType = newHousingType;
+    updateUsersOffers();
   });
 
   var housingPrice;
@@ -25,6 +70,7 @@
   housingPriceFilterElement.addEventListener('change', function (event) {
     var newHousingPrice = event.currentTarget.value;
     housingPrice = newHousingPrice;
+    updateUsersOffers();
   });
 
   var housingRooms;
@@ -33,6 +79,7 @@
   housingRoomsFilterElement.addEventListener('change', function (event) {
     var newHousingRooms = event.currentTarget.value;
     housingRooms = newHousingRooms;
+    updateUsersOffers();
   });
 
   var housingGuests;
@@ -41,8 +88,11 @@
   housingGuestsFilterElement.addEventListener('change', function (event) {
     var newHousingGuests = event.currentTarget.value;
     housingGuests = newHousingGuests;
+    updateUsersOffers();
   });
-  
+
+  // настройка фильтра features:
+
   var housingFeatures = [];
   var housingFeaturesFilterElementContainer = filterContainerElement.querySelector('.features');
 
@@ -55,15 +105,18 @@
       }
       target = target.parentNode;
     }
+    updateUsersOffers();
     console.log(housingFeatures);
   });
 
-  var successHandler = function (offers) {
-    window.data.getUsersOffers(offers);
+  var successHandler = function (data) {
+    // usersOffers = data;
+    renderSimilarUsersOffers(usersOffers);
   };
 
   window.backend.load(successHandler, window.backend.errorHandler);
   window.filters = {
+    usersOffers: usersOffers,
     filterContainerElement: filterContainerElement
   };
 })();

@@ -44,8 +44,8 @@
     },
     renderSimilarPins: function () {
       var fragment = document.createDocumentFragment();
-      for (var i = 0; i < window.data.usersOffers.length; i++) {
-        fragment.appendChild(renderPin(window.data.usersOffers[i], i));
+      for (var i = 0; i < window.filters.usersOffers.length; i++) {
+        fragment.appendChild(renderPin(window.filters.usersOffers[i], i));
       }
       similarPins.appendChild(fragment);
     },
