@@ -6,11 +6,8 @@
   var MAX_Y = 500;
   var MIN_Y = 100;
   var offerHandle = window.card.userMap.querySelector('.map__pin--main');
-  var offerAddressInput = window.form.form.querySelector('input[name="address"]');
   var offerXCoord = offerHandle.offsetLeft;
   var offerYCoord = offerHandle.offsetTop;
-
-  offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
 
   var onMainPinClick = function () {
     window.card.userMap.classList.remove('map--faded');
@@ -19,6 +16,7 @@
   };
 
   offerHandle.addEventListener('mouseup', function () {
+    window.pin.removeOldPins();
     onMainPinClick();
   });
 
@@ -69,7 +67,7 @@
 
       offerXCoord = offerHandleLeft + PIN_MAIN_WIDTH / 2;
       offerYCoord = offerHandleTop + PIN_MAIN_HEIGHT;
-      offerAddressInput.value = 'x: ' + offerXCoord + ', y: ' + offerYCoord;
+      window.form.offerAddressInput.value = 'x: ' + offerXCoord + ', y: ' + offerYCoord;
     };
 
     var onMouseUp = function (upEvt) {

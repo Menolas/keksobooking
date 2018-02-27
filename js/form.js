@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var offerHandle = window.card.userMap.querySelector('.map__pin--main');
+  var offerXCoord = offerHandle.offsetLeft;
+  var offerYCoord = offerHandle.offsetTop;
   var TYPES_AND_PRICES = {
     'bungalow': 0,
     'flat': 1000,
@@ -17,6 +20,7 @@
   };
   var form = document.querySelector('.notice__form');
   var formElement = form.querySelectorAll('.form__element');
+  var fillInput = form.querySelectorAll('.fill-input');
   var offerTitleInput = form.querySelector('input[name="title"]');
   var checkInInput = form.querySelector('select[name="timein"]');
   var checkOutInput = form.querySelector('select[name="timeout"]');
@@ -24,14 +28,38 @@
   var offerPriceInput = form.querySelector('input[name="price"]');
   var offerRoomNumberInput = form.querySelector('select[name="rooms"]');
   var offerNumberOfGuestsInput = form.querySelector('select[name="capacity"]');
+  var offerAddressInput = form.querySelector('input[name="address"]');
+
+  offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
+
+  var startInputValues = [];
+  var getStartInputValues = function () {
+    for (var i = 0; i < fillInput.length; i++) {
+      var startInputValueItem = fillInput[i].value;
+      startInputValues.push(startInputValueItem);
+    }
+    return startInputValues;
+  };
+
+  var putStartValues = function () {
+    for (var i = 0; i < fillInput.length; i++) {
+      fillInput[i].value = startInputValues[i];
+    }
+  };
 
   var putDisabled = function () {
+    form.classList.add('notice__form--disabled');
     for (var i = 0; i < formElement.length; i++) {
       formElement[i].setAttribute('disabled', '');
     }
   };
 
-  putDisabled();
+  var getStarted = function () {
+    getStartInputValues();
+    putDisabled();
+  };
+
+  getStarted();
 
   var enableForm = function () {
     form.classList.remove('notice__form--disabled');
@@ -124,25 +152,51 @@
       offerPriceInput.setCustomValidity('Цена на этот объект не может быть ниже ' + TYPES_AND_PRICES[offerTypeInput.value]);
     }
   });
-
-  form.addEventListener('invalid', function (event) {
+  /*
+  form.addEventListener('keypress', function (event) {
     var target = event.target;
-    if (target.tagName === 'input') {
-      target.classList.add('invalid');
+    while (target !== event.currentTarget) {
+      if (target.tagName.toLowerCase() === 'input') {
+        var method = (target.validity.valid) ? 'remove' : 'add';
+        target.classList.[method]('invalid');
+      }
+      target = target.parentNode;
     }
   });
+  */
+
+  var features = form.querySelectorAll('.features input');
+  var cleanFeatures = function () {
+    for (var i = 0; i < features.length; i++) {
+      features[i].checked = false;
+    }
+  };
+
+  var getConditionBeforeActivation = function () {
+    window.card.closePopup();
+    offerHandle.style = '';
+    putStartValues();
+    cleanFeatures();
+    window.card.userMap.classList.add('map--faded');
+    window.pin.removeOldPins();
+    putDisabled();
+  };
 
   var formSuccessHandler = function () {
-    for (var i = 0; i < formElement.length; i++) {
-      formElement[i].value = '';
-    }
+    getConditionBeforeActivation();
   };
 
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), formSuccessHandler, window.backend.errorHandler);
     evt.preventDefault();
   });
+
+  form.addEventListener('reset', function (evt) {
+    getConditionBeforeActivation();
+    evt.preventDefault();
+  });
   window.form = {
+    offerAddressInput: offerAddressInput,
     form: form,
     enableForm: enableForm
   };
