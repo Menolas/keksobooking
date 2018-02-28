@@ -5,6 +5,7 @@
 
   var userMap = document.querySelector('.map');
   var featureTemplate = document.querySelector('template').content.querySelector('.popup__features li');
+  var filterContainerElement = document.querySelector('.map__filters-container');
 
   var renderFeature = function (feature) {
     var featureElement = featureTemplate.cloneNode();
@@ -90,7 +91,7 @@
     if (renderOfferElement) {
       userMap.replaceChild(offerElement, renderOfferElement);
     } else {
-      userMap.insertBefore(offerElement, window.filters.filterContainerElement);
+      userMap.insertBefore(offerElement, filterContainerElement);
     }
     document.addEventListener('keydown', onPopupClose);
     var popupCloseButton = userMap.querySelector('.popup__close');

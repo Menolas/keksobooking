@@ -31,7 +31,7 @@
     }
     return usersOffers;
   };
-  
+
   /*
   var updateUsersOffers = function () {
     var sameTypeHousings = usersOffers.filter(function (it) {
@@ -45,27 +45,55 @@
   };
   */
 
-  var filterContainerElement = document.querySelector('.map__filters-container');
-  var updatedFilters = [];
-  var filterObjKeys = [];
-  var filterObjDescs = [];
+  var updateOffers = function (filterObj, isPriceField) {
+    var newOffers = [];
+    var filterValue = filterObj[Object.keys(filterObj)[0]];
 
-  filterContainerElement.addEventListener('change', function (event) {
-    var target = event.target;
-    while (target !== event.currentTarget) {
-      if (target.tagName.toLowerCase() === 'select' || target.tagName.toLowerCase() === 'input') {
-        var filterObjKey = target.getAttribute('name');
-        filterObjKeys.push(filterObjKey);
-        var filterObjDesc = target.value;
-        filterObjDescs.push(filterObjDesc);
-      }
-      target = target.parentNode;
+    // проверка на случай цены, спецфильтрация
+    if (isPriceField) {
+      newOffers = usersOffers.filter(function (usersOffers) {
+        switch (filterValue) {
+          case 'low':
+            return usersOffers.price < parseInt(filterValue);
+            break;
+
+          case 'middle':
+            return usersOffers.price < 50000 && usersOffers.price > 10000;
+            break;
+
+          default:
+            return usersOffers.price > 50000;
+        }
+      });
+    } else {
+      newOffers = usersOffers.filter(function (usersOffers) {
+        return usersOffers[Object.keys(filterObj)[0]] === filterValue;
+      });
     }
+
+    window.pin.renderSimilarPins(newOffers);
+  };
+
+  var filterForm = document.querySelector('.map__filters');
+  var updatedFilters = [];
+
+  filterForm.addEventListener('change', function (event) {
+    var target = event.target;
+    var housingFeature = {};
+
+    if (target.tagName.toLowerCase() === 'select' || target.tagName.toLowerCase() === 'input') {
+      window.pin.removeOldPins();
+      housingFeature[target.name] = target.value;
+      updatedFilters.push(housingFeature);
+    }
+    updateOffers(updatedFilters, isPriceField);
+    console.log(updatedFilters);
   });
-  console.log(filterObjKeys, filterObjDescs);
-  
 
   /*
+  var filterObjDesc = target.value;
+        filterObjDescs.push(filterObjDesc);
+
   if (target.tagName.toLowerCase() === 'input') {
         filterObj = target.getAttribute('name');
         console.log(target.getAttribute('name'));
@@ -143,7 +171,6 @@
 
   window.filters = {
     successHandler: successHandler,
-    usersOffers: usersOffers,
-    filterContainerElement: filterContainerElement
+    usersOffers: usersOffers
   };
 })();
