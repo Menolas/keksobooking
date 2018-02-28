@@ -1,7 +1,8 @@
 'use strict';
 
 (function () {
-  /*
+  var usersOffers = [];
+
   var getUsersOffers = function (offers) {
     for (var i = 0; i < offers.length; i++) {
       var userOffer = {
@@ -30,14 +31,8 @@
     }
     return usersOffers;
   };
-
-    
-    getUsersOffers(sameTypeHousings);
-  };
-  */
-
-   var usersOffers = [];
-
+  
+  /*
   var updateUsersOffers = function () {
     var sameTypeHousings = usersOffers.filter(function (it) {
       return it.offer.type === housingType;
@@ -48,10 +43,40 @@
 
     window.pin.renderSimilarPins(sameTypeHousings.concat(samePriceHousings));
   };
-
-  // настройка фильтров:
+  */
 
   var filterContainerElement = document.querySelector('.map__filters-container');
+  var updatedFilters = [];
+
+  filterContainerElement.addEventListener('change', function (event) {
+    var target = event.target;
+    while (target !== event.currentTarget) {
+      if (target.tagName.toLowerCase() === 'select' || target.tagName.toLowerCase() === 'input') {
+        var filterObj = {};
+        filterObj.target.getAttribute('name') = target.value
+        updatedFilters.push(filterObj);
+      }
+      target = target.parentNode;
+    }
+    return updatedFilters;
+    console.log(updatedFilters);
+  });
+  
+
+  /*
+  if (target.tagName.toLowerCase() === 'input') {
+        filterObj = target.getAttribute('name');
+        console.log(target.getAttribute('name'));
+      }
+      if (target.tagName.toLowerCase() === 'input') {
+        filterObj = target.getAttribute('name');
+        updatedFilters.push(filterObj);
+      } else {
+        updatedFilters = usersOffers;
+      }
+      */
+  /*
+  // настройка фильтров:
 
   var housingType;
   var housingTypeFilterElement = filterContainerElement.querySelector('select[name="housing-type"]');
@@ -59,7 +84,7 @@
   housingTypeFilterElement.addEventListener('change', function (event) {
     var newHousingType = event.currentTarget.value;
     housingType = newHousingType;
-    updateUsersOffers();
+
   });
 
   var housingPrice;
@@ -68,7 +93,7 @@
   housingPriceFilterElement.addEventListener('change', function (event) {
     var newHousingPrice = event.currentTarget.value;
     housingPrice = newHousingPrice;
-    updateUsersOffers();
+
   });
 
   var housingRooms;
@@ -77,7 +102,7 @@
   housingRoomsFilterElement.addEventListener('change', function (event) {
     var newHousingRooms = event.currentTarget.value;
     housingRooms = newHousingRooms;
-    updateUsersOffers();
+
   });
 
   var housingGuests;
@@ -86,7 +111,7 @@
   housingGuestsFilterElement.addEventListener('change', function (event) {
     var newHousingGuests = event.currentTarget.value;
     housingGuests = newHousingGuests;
-    updateUsersOffers();
+
   });
 
   // настройка фильтра features:
@@ -106,11 +131,13 @@
     updateUsersOffers();
     console.log(housingFeatures);
   });
+  */
 
   var successHandler = function (data) {
-    usersOffers = data;
-    updateUsersOffers();
+    getUsersOffers(data);
   };
+
+  window.backend.load(successHandler, window.backend.errorHandler);
 
   window.filters = {
     successHandler: successHandler,
