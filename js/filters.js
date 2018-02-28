@@ -52,16 +52,18 @@
     var target = event.target;
     while (target !== event.currentTarget) {
       if (target.tagName.toLowerCase() === 'select' || target.tagName.toLowerCase() === 'input') {
-        var filterObj = {};
-        filterObj.target.getAttribute('name') = target.value
+        var getFilterObj = function () {
+          this.target.getAttribute('name') = target.value;
+        };
+        var filterObj = new getFilterObj();
+        console.log(filterObj);
         updatedFilters.push(filterObj);
       }
       target = target.parentNode;
     }
     return updatedFilters;
-    console.log(updatedFilters);
   });
-  
+  console.log(updatedFilters);
 
   /*
   if (target.tagName.toLowerCase() === 'input') {
