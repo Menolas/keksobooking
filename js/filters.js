@@ -47,23 +47,23 @@
 
   var filterContainerElement = document.querySelector('.map__filters-container');
   var updatedFilters = [];
+  var filterObjKeys = [];
+  var filterObjDescs = [];
 
   filterContainerElement.addEventListener('change', function (event) {
     var target = event.target;
     while (target !== event.currentTarget) {
       if (target.tagName.toLowerCase() === 'select' || target.tagName.toLowerCase() === 'input') {
-        var getFilterObj = function () {
-          this.target.getAttribute('name') = target.value;
-        };
-        var filterObj = new getFilterObj();
-        console.log(filterObj);
-        updatedFilters.push(filterObj);
+        var filterObjKey = target.getAttribute('name');
+        filterObjKeys.push(filterObjKey);
+        var filterObjDesc = target.value;
+        filterObjDescs.push(filterObjDesc);
       }
       target = target.parentNode;
     }
-    return updatedFilters;
   });
-  console.log(updatedFilters);
+  console.log(filterObjKeys, filterObjDescs);
+  
 
   /*
   if (target.tagName.toLowerCase() === 'input') {
