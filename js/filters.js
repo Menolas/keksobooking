@@ -38,25 +38,19 @@
 
   window.backend.load(successHandler, window.backend.errorHandler);
 
-  console.log(usersOffers);
-
   var updateOffers = function (filterObj, isPriceField) {
     var newOffers = [];
     var filterValue = filterObj[Object.keys(filterObj)[0]];
 
     if (isPriceField) {
       newOffers = usersOffers.filter(function (offer) {
-        switch (filterValue) {
-          case 'low':
-            return offer.price < parseInt(filterValue, 10);
-            break;
-
-          case 'middle':
-            return offer.price < 50000 && offer.price > 10000;
-            break;
-
-          default:
-            return offer.price > 50000;
+        if (filterValue === 'low') {
+          return offer.price < parseInt(filterValue, 10);
+        }
+        if (filterValue === 'middle') {
+          return offer.price < 50000 && offer.price > 10000;
+        } else {
+          return offer.price > 50000;
         }
       });
     } else {
@@ -64,7 +58,12 @@
         return offer[Object.keys(filterObj)[0]] === filterValue;
       });
     }
-    return newOffers;
+    if (!filterValue) {
+      newOffers = usersOffers;
+      return;
+    }
+    window.pin.removeOldPins();
+    window.pin.renderSimilarPins(newOffers);
   };
 
   var findDuplicateFilter = function (filters, filterToFind) {
@@ -106,8 +105,7 @@
 
     updatedFilters.push(housingFeature);
     updateOffers(updatedFilters, housingPriceFilterElement);
-    window.pin.removeOldPins();
-    window.pin.renderSimilarPins(newOffers);
+    console.log(newOffers);
   });
 
   window.filters = {
