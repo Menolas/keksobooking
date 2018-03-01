@@ -58,12 +58,6 @@
         return offer[Object.keys(filterObj)[0]] === filterValue;
       });
     }
-    if (!filterValue) {
-      newOffers = usersOffers;
-      return;
-    }
-    window.pin.removeOldPins();
-    window.pin.renderSimilarPins(newOffers);
   };
 
   var findDuplicateFilter = function (filters, filterToFind) {
@@ -88,24 +82,29 @@
 
   filterForm.addEventListener('change', function (event) {
     var target = event.target;
-    var housingFeature = {};
-    housingFeature[target.name] = target.value;
+    if (target.value !== 'any') {
+      var housingFeature = {};
+      housingFeature[target.name] = target.value;
 
-    if (target.tagName.toLowerCase() === 'select') {
-      var duplicateIndex = findDuplicateFilter(updatedFilters, target.name);
+      if (target.tagName.toLowerCase() === 'select') {
+        var duplicateIndex = findDuplicateFilter(updatedFilters, target.name);
 
-      if (duplicateIndex !== -1) {
-        updatedFilters.splice(duplicateIndex, 1, housingFeature);
+        if (duplicateIndex !== -1) {
+          updatedFilters.splice(duplicateIndex, 1, housingFeature);
+          return;
+        }
+      } else if (target.type === 'checkbox' && !target.checked) {
+        removeUncheckedFilter(updatedFilters, target.name);
         return;
       }
-    } else if (target.type === 'checkbox' && !target.checked) {
-      removeUncheckedFilter(updatedFilters, housingFeature);
-      return;
     }
 
     updatedFilters.push(housingFeature);
     updateOffers(updatedFilters, housingPriceFilterElement);
-    console.log(newOffers);
+    window.pin.removeOldPins();
+    window.pin.renderSimilarPins(newOffers);
+    console.log(updatedFilters);
+    // console.log(newOffers);
   });
 
   window.filters = {
