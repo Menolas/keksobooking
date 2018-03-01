@@ -44,10 +44,10 @@
 
     if (isPriceField) {
       newOffers = usersOffers.filter(function (offer) {
-        if (filterValue === 'low') {
+        if (filterValue === 'lower than 10000') {
           return offer.price < parseInt(filterValue, 10);
         }
-        if (filterValue === 'middle') {
+        if (filterValue === 'from 10000 to 50000') {
           return offer.price < 50000 && offer.price > 10000;
         } else {
           return offer.price > 50000;
