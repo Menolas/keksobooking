@@ -29,6 +29,7 @@
   };
 
   var pinElementActive;
+
   window.pin = {
     removeOldPins: removeOldPins,
     removeActivePin: function () {
@@ -53,4 +54,5 @@
     },
     similarPins: similarPins
   };
+
 })();

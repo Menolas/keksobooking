@@ -42,14 +42,6 @@
   };
 
   var offerTemplate = document.querySelector('template').content.querySelector('article.map__card');
-  /*
-  var getChecked = function (array, node, fun) {
-    if (array.length = 0) {
-      node.remove();
-    }
-    node.appendChild(fun(array));
-  };
-  */
 
   var renderOffer = function (userOffer) {
     var offerElement = offerTemplate.cloneNode(true);
@@ -63,10 +55,8 @@
     offerElement.querySelector('h4').textContent = userOffer.offer.type;
     offerElement.querySelector('p:nth-of-type(3)').textContent = userOffer.offer.rooms + ' комнаты для ' + userOffer.offer.guests + ' гостей';
     offerElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + userOffer.offer.checkin + ', выезд до ' + userOffer.offer.checkout;
-    // getChecked(userOffer.offer.features, offerElement.querySelector('.popup__features'), renderOfferFeatures);
     offerElement.querySelector('.popup__features').appendChild(renderOfferFeatures(userOffer.offer.features));
     offerElement.querySelector('p:nth-of-type(5)').textContent = userOffer.offer.description;
-    // getChecked(userOffer.offer.photos, offerElement.querySelector('.popup__pictures'), renderOfferPictures);
     offerElement.querySelector('.popup__pictures').appendChild(renderOfferPictures(userOffer.offer.photos));
 
     return offerElement;
@@ -108,5 +98,6 @@
     closePopup: closePopup,
     userMap: userMap
   };
+
 })();
 

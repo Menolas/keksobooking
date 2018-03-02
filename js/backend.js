@@ -5,6 +5,7 @@
   var URL_SAVE = 'https://js.dump.academy/keksobooking';
   var xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
+
   window.backend = {
     load: function (onLoad, onError) {
       xhr.addEventListener('load', function () {
@@ -48,4 +49,5 @@
       xhr.send(data);
     }
   };
+
 })();

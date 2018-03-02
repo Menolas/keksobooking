@@ -152,18 +152,17 @@
       offerPriceInput.setCustomValidity('Цена на этот объект не может быть ниже ' + TYPES_AND_PRICES[offerTypeInput.value]);
     }
   });
-  /*
+
   form.addEventListener('keypress', function (event) {
     var target = event.target;
     while (target !== event.currentTarget) {
       if (target.tagName.toLowerCase() === 'input') {
         var method = (target.validity.valid) ? 'remove' : 'add';
-        target.classList.[method]('invalid');
+        target.classList[method]('invalid');
       }
       target = target.parentNode;
     }
   });
-  */
 
   var features = form.querySelectorAll('.features input');
   var cleanFeatures = function () {
@@ -195,9 +194,11 @@
     getConditionBeforeActivation();
     evt.preventDefault();
   });
+
   window.form = {
     offerAddressInput: offerAddressInput,
     form: form,
     enableForm: enableForm
   };
+
 })();

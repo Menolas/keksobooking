@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MIN_HOUSING_PRICE_LIMIT = 10000;
+  var MIDDLE_HOUSING_PRICE_LIMIT = 50000;
   var usersOffers = [];
 
   var getUsersOffers = function (offers) {
@@ -37,25 +39,37 @@
   };
 
   window.backend.load(successHandler, window.backend.errorHandler);
+  var filteredOffers = [];
 
   var updateOffers = function (filterObj, isPriceField) {
-    var newOffers = [];
+    var filterKey = Object.keys(filterObj)[0];
     var filterValue = filterObj[Object.keys(filterObj)[0]];
+    filterValue = (+filterValue) ? +filterValue : filterValue;
+
+    if (filterValue === 'any') {
+      filteredOffers = usersOffers;
+      return;
+    }
 
     if (isPriceField) {
-      newOffers = usersOffers.filter(function (offer) {
+      filteredOffers = usersOffers.filter(function (usersOffer) {
         if (filterValue === 'lower than 10000') {
-          return offer.price < parseInt(filterValue, 10);
-        }
-        if (filterValue === 'from 10000 to 50000') {
-          return offer.price < 50000 && offer.price > 10000;
+          return usersOffer.offer.price <= MIN_HOUSING_PRICE_LIMIT;
+        } else if (filterValue === 'from 10000 to 50000') {
+          return usersOffer.offer.price >= MIN_HOUSING_PRICE_LIMIT && usersOffer.offer.price <= MIDDLE_HOUSING_PRICE_LIMIT;
+        } else if (filterValue === 'from 50000') {
+          return usersOffer.offer.price >= MIDDLE_HOUSING_PRICE_LIMIT;
         } else {
-          return offer.price > 50000;
+          return usersOffer.offer.price;
         }
       });
     } else {
-      newOffers = usersOffers.filter(function (offer) {
-        return offer[Object.keys(filterObj)[0]] === filterValue;
+      filteredOffers = usersOffers.filter(function (usersOffer) {
+        if (Array.isArray(usersOffer.offer[filterKey])) {
+          return usersOffer.offer[filterKey].indexOf(filterValue) !== -1;
+        }
+
+        return usersOffer.offer[filterKey] === filterValue;
       });
     }
   };
@@ -72,43 +86,49 @@
     return index;
   };
 
-  var removeUncheckedFilter = function (filtersArr, filterName) {
-    filtersArr.splice(filtersArr.indexOf(filterName), 1);
-  };
-
   var filterForm = document.querySelector('.map__filters');
-  var housingPriceFilterElement = filterForm.querySelector('select[name="housing-price"]');
-  var updatedFilters = [];
+  var userFilters = [];
 
-  filterForm.addEventListener('change', function (event) {
-    var target = event.target;
-    if (target.value !== 'any') {
-      var housingFeature = {};
-      housingFeature[target.name] = target.value;
+  var collectFilters = function (e) {
+    var housingFeature = {};
+    housingFeature[e.target.name] = e.target.value;
 
-      if (target.tagName.toLowerCase() === 'select') {
-        var duplicateIndex = findDuplicateFilter(updatedFilters, target.name);
+    if (e.target.tagName.toLowerCase() === 'select') {
+      var duplicateIndex = findDuplicateFilter(userFilters, e.target.name);
 
-        if (duplicateIndex !== -1) {
-          updatedFilters.splice(duplicateIndex, 1, housingFeature);
-          return;
-        }
-      } else if (target.type === 'checkbox' && !target.checked) {
-        removeUncheckedFilter(updatedFilters, target.name);
+      if (duplicateIndex !== -1) {
+        userFilters.splice(duplicateIndex, 1, housingFeature);
         return;
       }
+    } else if (e.target.type === 'checkbox' && !e.target.checked) {
+      userFilters.splice(userFilters.indexOf(e.target.name), 1);
+      return;
     }
 
-    updatedFilters.push(housingFeature);
-    updateOffers(updatedFilters, housingPriceFilterElement);
+    userFilters.push(housingFeature);
+  };
+
+  filterForm.addEventListener('change', function (event) {
+    window.card.closePopup();
+    var isPriceFieldChanged = false;
+
+    if (event.target.name.toLowerCase() === 'price') {
+      isPriceFieldChanged = true;
+    }
+
+    collectFilters(event);
+
+    userFilters.forEach(function (userFilter) {
+      window.debounce(updateOffers(userFilter, isPriceFieldChanged));
+    });
+
     window.pin.removeOldPins();
-    window.pin.renderSimilarPins(newOffers);
-    console.log(updatedFilters);
-    // console.log(newOffers);
+    window.pin.renderSimilarPins(filteredOffers);
   });
 
   window.filters = {
     successHandler: successHandler,
     usersOffers: usersOffers
   };
+
 })();
