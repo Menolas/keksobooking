@@ -1,9 +1,7 @@
 'use strict';
 
 (function () {
-  var offerHandle = window.card.userMap.querySelector('.map__pin--main');
-  var offerXCoord = offerHandle.offsetLeft;
-  var offerYCoord = offerHandle.offsetTop;
+
   var TYPES_AND_PRICES = {
     'bungalow': 0,
     'flat': 1000,
@@ -18,6 +16,9 @@
     '3': '3',
     '100': '0'
   };
+  var offerHandle = window.card.userMap.querySelector('.map__pin--main');
+  var offerXCoord = offerHandle.offsetLeft;
+  var offerYCoord = offerHandle.offsetTop;
   var form = document.querySelector('.notice__form');
   var formElement = form.querySelectorAll('.form__element');
   var fillInput = form.querySelectorAll('.fill-input');
@@ -29,6 +30,7 @@
   var offerRoomNumberInput = form.querySelector('select[name="rooms"]');
   var offerNumberOfGuestsInput = form.querySelector('select[name="capacity"]');
   var offerAddressInput = form.querySelector('input[name="address"]');
+  var invalidInput = false;
 
   offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
 
@@ -70,7 +72,7 @@
 
   var checkMinPrice = function (evt) {
     var target = evt.currentTarget;
-    offerPriceInput.min = TYPES_AND_PRICES[target.value];
+    offerPriceInput.setAttribute('min', TYPES_AND_PRICES[target.value]);
   };
 
   offerTypeInput.addEventListener('change', checkMinPrice);
@@ -138,8 +140,17 @@
     setValidValueForGuest();
   });
 
+  var getRedBorder = function (input) {
+    if(invalidInput) {
+    input.style.border = '2px solid red';
+    } else {
+      input.style.border = '';
+    }
+  };
+
   offerTitleInput.addEventListener('invalid', function () {
-    offerTitleInput.style.border = '2px solid red';
+    invalidInput = true;
+    getRedBorder(offerTitleInput);
     if (offerTitleInput.validity.tooShort) {
       offerTitleInput.setCustomValidity('Заголовок объявления должен состоять минимум из 30 символов');
     } else if (offerTitleInput.validity.tooLong) {
@@ -152,7 +163,8 @@
   });
 
   offerPriceInput.addEventListener('invalid', function () {
-    offerPriceInput.style.border = '2px solid red';
+    invalidInput = true;
+    getRedBorder(offerPriceInput);
     if (offerPriceInput.validity.rangeUnderflow) {
       offerPriceInput.setCustomValidity('Цена на этот объект не может быть ниже ' + TYPES_AND_PRICES[offerTypeInput.value]);
     } else if (offerTitleInput.validity.valueMissing) {
