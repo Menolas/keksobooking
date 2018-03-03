@@ -68,8 +68,9 @@
     }
   };
 
-  var checkMinPrice = function (event) {
-    offerPriceInput.min = TYPES_AND_PRICES[event.currentTarget.value];
+  var checkMinPrice = function (evt) {
+    var target = evt.currentTarget;
+    offerPriceInput.min = TYPES_AND_PRICES[target.value];
   };
 
   offerTypeInput.addEventListener('change', checkMinPrice);
@@ -138,29 +139,26 @@
   });
 
   offerTitleInput.addEventListener('invalid', function () {
+    offerTitleInput.style.border = '2px solid red';
     if (offerTitleInput.validity.tooShort) {
       offerTitleInput.setCustomValidity('Заголовок объявления должен состоять минимум из 30 символов');
     } else if (offerTitleInput.validity.tooLong) {
       offerTitleInput.setCustomValidity('Заголовок объявления не должен превышать 100 символов');
     } else if (offerTitleInput.validity.valueMissing) {
       offerTitleInput.setCustomValidity('Обязательное поле');
+    } else {
+      offerTitleInput.setCustomValidity('');
     }
   });
 
   offerPriceInput.addEventListener('invalid', function () {
+    offerPriceInput.style.border = '2px solid red';
     if (offerPriceInput.validity.rangeUnderflow) {
       offerPriceInput.setCustomValidity('Цена на этот объект не может быть ниже ' + TYPES_AND_PRICES[offerTypeInput.value]);
-    }
-  });
-
-  form.addEventListener('keypress', function (event) {
-    var target = event.target;
-    while (target !== event.currentTarget) {
-      if (target.tagName.toLowerCase() === 'input') {
-        var method = (target.validity.valid) ? 'remove' : 'add';
-        target.classList[method]('invalid');
-      }
-      target = target.parentNode;
+    } else if (offerTitleInput.validity.valueMissing) {
+      offerTitleInput.setCustomValidity('Обязательное поле');
+    } else {
+      offerTitleInput.setCustomValidity('');
     }
   });
 
@@ -181,12 +179,39 @@
     putDisabled();
   };
 
+  var submitErrorMessage = document.createElement('div');
+  submitErrorMessage.classList.add('submit-error-message');
+
+  var closeSubmitErrorMessage = document.createElement('div');
+  closeSubmitErrorMessage.classList.add('node-close');
+  closeSubmitErrorMessage.setAttribute('tabindex', '0');
+
+  var onErrorMessageClose = function (evt) {
+    window.util.isEscEvent(evt, closeErrorMessage);
+  };
+
+  var closeErrorMessage = function () {
+    submitErrorMessage.remove();
+    document.removeEventListener('keydown', onErrorMessageClose);
+  };
+
+  var submitErrorHandler = function (errorMessage) {
+    form.insertAdjacentElement('afterbegin', submitErrorMessage);
+    submitErrorMessage.textContent = errorMessage;
+    submitErrorMessage.insertAdjacentElement('afterbegin', closeSubmitErrorMessage);
+    document.addEventListener('keydown', onErrorMessageClose);
+    closeSubmitErrorMessage.addEventListener('click', closeErrorMessage);
+    closeSubmitErrorMessage.addEventListener('keydown', function (evt) {
+      window.util.isEnterEvent(evt, closeErrorMessage);
+    });
+  };
+
   var formSuccessHandler = function () {
     getConditionBeforeActivation();
   };
 
   form.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(form), formSuccessHandler, window.backend.submitErrorHandler);
+    window.backend.save(new FormData(form), formSuccessHandler, submitErrorHandler);
     evt.preventDefault();
   });
 

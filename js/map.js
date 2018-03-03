@@ -24,18 +24,22 @@
     window.util.isEnterEvent(evt, onMainPinClick);
   });
 
-  window.pin.similarPins.addEventListener('click', function (event) {
-    var target = event.target;
-    while (target !== event.currentTarget) {
-      if (target.className === 'map__pin') {
-        window.pin.getHighlight(target);
-        var i = target.getAttribute('data-position');
-        window.card.getPopup(window.filters.usersOffers[i]);
-        return;
+  var renderPinCard = function (array) {
+    window.pin.similarPins.addEventListener('click', function (evt) {
+      var target = evt.target;
+      while (target !== evt.currentTarget) {
+        if (target.className === 'map__pin') {
+          window.pin.getHighlight(target);
+          var i = target.getAttribute('data-position');
+          window.card.getPopup(array[i]);
+          return;
+        }
+        target = target.parentNode;
       }
-      target = target.parentNode;
-    }
-  });
+    });
+  };
+
+  renderPinCard(window.filters.usersOffers);
 
   offerHandle.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -80,5 +84,9 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  window.map = {
+    renderPinCard: renderPinCard
+  };
 
 })();

@@ -6,33 +6,6 @@
   var xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
 
-  var submitErrorMessage = document.createElement('div');
-  submitErrorMessage.classList.add('submit-error-message');
-
-  var closeSubmitErrorMessage = document.createElement('div');
-  closeSubmitErrorMessage.classList.add('node-close');
-  closeSubmitErrorMessage.setAttribute('tabindex', '0');
-
-  var onErrorMessageClose = function (evt) {
-    window.util.isEscEvent(evt, closeErrorMessage);
-  };
-
-  var closeErrorMessage = function () {
-    submitErrorMessage.remove();
-    document.removeEventListener('keydown', onErrorMessageClose);
-  };
-
-  var submitErrorHandler = function (errorMessage) {
-    window.form.form.insertAdjacentElement('afterbegin', submitErrorMessage);
-    submitErrorMessage.textContent = errorMessage;
-    submitErrorMessage.insertAdjacentElement('afterbegin', closeSubmitErrorMessage);
-    document.addEventListener('keydown', onErrorMessageClose);
-    closeSubmitErrorMessage.addEventListener('click', closeErrorMessage);
-    closeSubmitErrorMessage.addEventListener('keydown', function (evt) {
-      window.util.isEnterEvent(evt, closeErrorMessage);
-    });
-  };
-
   window.backend = {
     load: function (onLoad, onError) {
       xhr.addEventListener('load', function () {
@@ -61,7 +34,6 @@
       node.textContent = errorMessage;
       document.body.insertAdjacentElement('afterbegin', node);
     },
-    submitErrorHandler: submitErrorHandler,
     save: function (data, onLoad, onError) {
       xhr.addEventListener('load', function () {
         if (xhr.status >= 200 && xhr.status <= 400) {

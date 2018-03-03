@@ -41,37 +41,29 @@
   window.backend.load(successHandler, window.backend.errorHandler);
   var filteredOffers = [];
 
-  var updateOffers = function (filterObj, isPriceField) {
+  var updateOffers = function (arrToFilter, filterObj) {
     var filterKey = Object.keys(filterObj)[0];
     var filterValue = filterObj[Object.keys(filterObj)[0]];
     filterValue = (+filterValue) ? +filterValue : filterValue;
 
     if (filterValue === 'any') {
-      filteredOffers = usersOffers;
+      filteredOffers = arrToFilter;
       return;
     }
 
-    if (isPriceField) {
-      filteredOffers = usersOffers.filter(function (usersOffer) {
-        if (filterValue === 'lower than 10000') {
-          return usersOffer.offer.price <= MIN_HOUSING_PRICE_LIMIT;
-        } else if (filterValue === 'from 10000 to 50000') {
-          return usersOffer.offer.price >= MIN_HOUSING_PRICE_LIMIT && usersOffer.offer.price <= MIDDLE_HOUSING_PRICE_LIMIT;
-        } else if (filterValue === 'from 50000') {
-          return usersOffer.offer.price >= MIDDLE_HOUSING_PRICE_LIMIT;
-        } else {
-          return usersOffer.offer.price;
-        }
-      });
-    } else {
-      filteredOffers = usersOffers.filter(function (usersOffer) {
-        if (Array.isArray(usersOffer.offer[filterKey])) {
-          return usersOffer.offer[filterKey].indexOf(filterValue) !== -1;
-        }
+    filteredOffers = arrToFilter.filter(function (item) {
+      if (filterValue === 'lower than 10000') {
+        return item.offer.price <= MIN_HOUSING_PRICE_LIMIT;
+      } else if (filterValue === 'from 10000 to 50000') {
+        return item.offer.price >= MIN_HOUSING_PRICE_LIMIT && item.offer.price <= MIDDLE_HOUSING_PRICE_LIMIT;
+      } else if (filterValue === 'from 50000') {
+        return item.offer.price >= MIDDLE_HOUSING_PRICE_LIMIT;
+      } else if (Array.isArray(item.offer[filterKey])) {
+        return item.offer[filterKey].indexOf(filterValue) !== -1;
+      }
 
-        return usersOffer.offer[filterKey] === filterValue;
-      });
-    }
+      return item.offer[filterKey] === filterValue;
+    });
   };
 
   var findDuplicateFilter = function (filters, filterToFind) {
@@ -110,25 +102,25 @@
 
   filterForm.addEventListener('change', function (event) {
     window.card.closePopup();
-    var isPriceFieldChanged = false;
-
-    if (event.target.name.toLowerCase() === 'price') {
-      isPriceFieldChanged = true;
-    }
 
     collectFilters(event);
 
-    userFilters.forEach(function (userFilter) {
-      window.debounce(updateOffers(userFilter, isPriceFieldChanged));
-    });
+    for (var i = 0; i < userFilters.length; i++) {
+      var hotels = (i === 0) ? usersOffers : filteredOffers;
 
-    window.pin.removeOldPins();
-    window.pin.renderSimilarPins(filteredOffers);
+      updateOffers(hotels, userFilters[i]);
+    }
+
+    console.log(filteredOffers);
+    window.debounce(window.pin.removeOldPins());
+    window.pin.similarPins.removeEventListener('click', window.map.renderPinCard);
+    window.debounce(window.pin.renderSimilarPins(filteredOffers));
+    window.map.renderPinCard(filteredOffers);
   });
+
 
   window.filters = {
     successHandler: successHandler,
     usersOffers: usersOffers
   };
-
 })();

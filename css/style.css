@@ -743,11 +743,6 @@ textarea:focus
     width: 140px;
 }
 
-.notice__form .invalid 
-{
-    border: 2px solid red;
-}
-
 .form__element--submit
 {
     width: 100%;
