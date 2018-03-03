@@ -12,7 +12,7 @@
   var onMainPinClick = function () {
     window.card.userMap.classList.remove('map--faded');
     window.form.enableForm();
-    window.pin.renderSimilarPins();
+    window.pin.renderSimilarPins(window.data.usersOffers);
   };
 
   offerHandle.addEventListener('mouseup', function () {
@@ -24,18 +24,32 @@
     window.util.isEnterEvent(evt, onMainPinClick);
   });
 
-  window.pin.similarPins.addEventListener('click', function (event) {
-    var target = event.target;
-    while (target !== event.currentTarget) {
+  var renderPinCard = function (evt, array) {
+    var target = evt.target;
+    while (target !== evt.currentTarget) {
       if (target.className === 'map__pin') {
         window.pin.getHighlight(target);
         var i = target.getAttribute('data-position');
-        window.card.getPopup(window.data.usersOffers[i]);
+        window.card.getPopup(array[i]);
         return;
       }
       target = target.parentNode;
     }
-  });
+  };
+
+  var getTheHousingCard = function () {
+    if (window.data.usersOffersChanges) {
+      window.pin.similarPins.addEventListener('click', function (evt) {
+        renderPinCard(evt, window.data.usersOffers);
+      });
+    } else {
+      window.pin.similarPins.removeEventListener('click', function (evt) {
+        renderPinCard(evt, window.data.usersOffers);
+      });
+    }
+  };
+
+  getTheHousingCard();
 
   offerHandle.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -80,4 +94,9 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  window.map = {
+    renderPinCard: renderPinCard
+  };
+
 })();

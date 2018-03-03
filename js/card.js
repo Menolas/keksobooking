@@ -2,10 +2,10 @@
 
 (function () {
   var SYMBOL_OF_RUBLE = String.fromCharCode(8381);
-  var userMap = document.querySelector('.map');
-  // var filterContainerElement = document.querySelector('.map__filters-container');
 
+  var userMap = document.querySelector('.map');
   var featureTemplate = document.querySelector('template').content.querySelector('.popup__features li');
+  var filterContainerElement = document.querySelector('.map__filters-container');
 
   var renderFeature = function (feature) {
     var featureElement = featureTemplate.cloneNode();
@@ -41,15 +41,13 @@
     return fragment;
   };
 
-  var offerTemplate = document.querySelector('template').content.querySelector('article.map__card');
-  /*
-  var getChecked = function (array, node, fun) {
-    if (array.length = 0) {
-      node.remove();
+  var checkIfExcist = function (array, element) {
+    if (array.length === 0) {
+      element.remove();
     }
-    node.appendChild(fun(array));
   };
-  */
+
+  var offerTemplate = document.querySelector('template').content.querySelector('article.map__card');
 
   var renderOffer = function (userOffer) {
     var offerElement = offerTemplate.cloneNode(true);
@@ -63,11 +61,11 @@
     offerElement.querySelector('h4').textContent = userOffer.offer.type;
     offerElement.querySelector('p:nth-of-type(3)').textContent = userOffer.offer.rooms + ' комнаты для ' + userOffer.offer.guests + ' гостей';
     offerElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + userOffer.offer.checkin + ', выезд до ' + userOffer.offer.checkout;
-    // getChecked(userOffer.offer.features, offerElement.querySelector('.popup__features'), renderOfferFeatures);
     offerElement.querySelector('.popup__features').appendChild(renderOfferFeatures(userOffer.offer.features));
+    checkIfExcist(userOffer.offer.features, offerElement.querySelector('.popup__features'));
     offerElement.querySelector('p:nth-of-type(5)').textContent = userOffer.offer.description;
-    // getChecked(userOffer.offer.photos, offerElement.querySelector('.popup__pictures'), renderOfferPictures);
     offerElement.querySelector('.popup__pictures').appendChild(renderOfferPictures(userOffer.offer.photos));
+    checkIfExcist(userOffer.offer.photos, offerElement.querySelector('.popup__pictures'));
 
     return offerElement;
   };
@@ -91,21 +89,21 @@
     if (renderOfferElement) {
       userMap.replaceChild(offerElement, renderOfferElement);
     } else {
-      userMap.insertBefore(offerElement, window.filters.filterContainerElement);
+      userMap.insertBefore(offerElement, filterContainerElement);
     }
     document.addEventListener('keydown', onPopupClose);
     var popupCloseButton = userMap.querySelector('.popup__close');
-    popupCloseButton.addEventListener('click', function () {
-      closePopup();
-    });
+    popupCloseButton.addEventListener('click', closePopup);
     popupCloseButton.addEventListener('keydown', function (evt) {
       window.util.isEnterEvent(evt, closePopup);
     });
   };
+
   window.card = {
     getPopup: getPopup,
     closePopup: closePopup,
     userMap: userMap
   };
+
 })();
 

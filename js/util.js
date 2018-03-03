@@ -3,6 +3,7 @@
 (function () {
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
+
   window.util = {
     getRandomItem: function (array) {
       return array[Math.floor(Math.random() * array.length)];
@@ -23,4 +24,5 @@
       }
     }
   };
+
 })();

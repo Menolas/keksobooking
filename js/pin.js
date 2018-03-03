@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var MAX_SIMILAR_OFFERS = 5;
   var PIN_WIDTH = 40;
   var PIN_HEIGHT = 40;
   var PIN_TAIL = 18;
@@ -28,6 +29,7 @@
   };
 
   var pinElementActive;
+
   window.pin = {
     removeOldPins: removeOldPins,
     removeActivePin: function () {
@@ -42,13 +44,15 @@
       pinElementActive = node;
       pinElementActive.classList.add('map__pin--active');
     },
-    renderSimilarPins: function () {
+    renderSimilarPins: function (data) {
       var fragment = document.createDocumentFragment();
-      for (var i = 0; i < window.data.usersOffers.length; i++) {
-        fragment.appendChild(renderPin(window.data.usersOffers[i], i));
+      var offersLimit = (data.length > MAX_SIMILAR_OFFERS) ? MAX_SIMILAR_OFFERS : data.length;
+      for (var i = 0; i < offersLimit; i++) {
+        fragment.appendChild(renderPin(data[i], i));
       }
       similarPins.appendChild(fragment);
     },
     similarPins: similarPins
   };
+
 })();

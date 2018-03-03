@@ -1,9 +1,7 @@
 'use strict';
 
 (function () {
-  var offerHandle = window.card.userMap.querySelector('.map__pin--main');
-  var offerXCoord = offerHandle.offsetLeft;
-  var offerYCoord = offerHandle.offsetTop;
+
   var TYPES_AND_PRICES = {
     'bungalow': 0,
     'flat': 1000,
@@ -18,6 +16,9 @@
     '3': '3',
     '100': '0'
   };
+  var offerHandle = window.card.userMap.querySelector('.map__pin--main');
+  var offerXCoord = offerHandle.offsetLeft;
+  var offerYCoord = offerHandle.offsetTop;
   var form = document.querySelector('.notice__form');
   var formElement = form.querySelectorAll('.form__element');
   var fillInput = form.querySelectorAll('.fill-input');
@@ -29,6 +30,7 @@
   var offerRoomNumberInput = form.querySelector('select[name="rooms"]');
   var offerNumberOfGuestsInput = form.querySelector('select[name="capacity"]');
   var offerAddressInput = form.querySelector('input[name="address"]');
+  var invalidInput = false;
 
   offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
 
@@ -68,11 +70,14 @@
     }
   };
 
-  var checkMinPrice = function (event) {
-    offerPriceInput.min = TYPES_AND_PRICES[event.currentTarget.value];
+  var checkMinPrice = function (evt) {
+    var target = evt.currentTarget;
+    offerPriceInput.setAttribute('min', TYPES_AND_PRICES[target.value]);
   };
 
   offerTypeInput.addEventListener('change', checkMinPrice);
+
+  offerPriceInput.addEventListener('change', checkMinPrice);
 
   var checkTimeOfCheckIn = function () {
     checkOutInput.value = checkInInput.value;
@@ -137,33 +142,39 @@
     setValidValueForGuest();
   });
 
+  var getRedBorder = function (input) {
+    if (invalidInput) {
+      input.style.border = '2px solid red';
+    } else {
+      input.style.border = '';
+    }
+  };
+
   offerTitleInput.addEventListener('invalid', function () {
+    invalidInput = true;
+    getRedBorder(offerTitleInput);
     if (offerTitleInput.validity.tooShort) {
       offerTitleInput.setCustomValidity('Заголовок объявления должен состоять минимум из 30 символов');
     } else if (offerTitleInput.validity.tooLong) {
       offerTitleInput.setCustomValidity('Заголовок объявления не должен превышать 100 символов');
     } else if (offerTitleInput.validity.valueMissing) {
       offerTitleInput.setCustomValidity('Обязательное поле');
+    } else {
+      offerTitleInput.setCustomValidity('');
     }
   });
 
   offerPriceInput.addEventListener('invalid', function () {
+    invalidInput = true;
+    getRedBorder(offerPriceInput);
     if (offerPriceInput.validity.rangeUnderflow) {
       offerPriceInput.setCustomValidity('Цена на этот объект не может быть ниже ' + TYPES_AND_PRICES[offerTypeInput.value]);
+    } else if (offerTitleInput.validity.valueMissing) {
+      offerTitleInput.setCustomValidity('Обязательное поле');
+    } else {
+      offerTitleInput.setCustomValidity('');
     }
   });
-  /*
-  form.addEventListener('keypress', function (event) {
-    var target = event.target;
-    while (target !== event.currentTarget) {
-      if (target.tagName.toLowerCase() === 'input') {
-        var method = (target.validity.valid) ? 'remove' : 'add';
-        target.classList.[method]('invalid');
-      }
-      target = target.parentNode;
-    }
-  });
-  */
 
   var features = form.querySelectorAll('.features input');
   var cleanFeatures = function () {
@@ -171,6 +182,12 @@
       features[i].checked = false;
     }
   };
+  /*
+  var resetForm = function () {
+    for (var i = 0; i < formElement.length; i++) {
+      formElement[i].reset();
+    }
+  };*/
 
   var getConditionBeforeActivation = function () {
     window.card.closePopup();
@@ -182,12 +199,39 @@
     putDisabled();
   };
 
+  var submitErrorMessage = document.createElement('div');
+  submitErrorMessage.classList.add('submit-error-message');
+
+  var closeSubmitErrorMessage = document.createElement('div');
+  closeSubmitErrorMessage.classList.add('node-close');
+  closeSubmitErrorMessage.setAttribute('tabindex', '0');
+
+  var onErrorMessageClose = function (evt) {
+    window.util.isEscEvent(evt, closeErrorMessage);
+  };
+
+  var closeErrorMessage = function () {
+    submitErrorMessage.remove();
+    document.removeEventListener('keydown', onErrorMessageClose);
+  };
+
+  var submitErrorHandler = function (errorMessage) {
+    form.insertAdjacentElement('afterbegin', submitErrorMessage);
+    submitErrorMessage.textContent = errorMessage;
+    submitErrorMessage.insertAdjacentElement('afterbegin', closeSubmitErrorMessage);
+    document.addEventListener('keydown', onErrorMessageClose);
+    closeSubmitErrorMessage.addEventListener('click', closeErrorMessage);
+    closeSubmitErrorMessage.addEventListener('keydown', function (evt) {
+      window.util.isEnterEvent(evt, closeErrorMessage);
+    });
+  };
+
   var formSuccessHandler = function () {
     getConditionBeforeActivation();
   };
 
   form.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(form), formSuccessHandler, window.backend.errorHandler);
+    window.backend.save(new FormData(form), formSuccessHandler, submitErrorHandler);
     evt.preventDefault();
   });
 
@@ -195,9 +239,11 @@
     getConditionBeforeActivation();
     evt.preventDefault();
   });
+
   window.form = {
     offerAddressInput: offerAddressInput,
     form: form,
     enableForm: enableForm
   };
+
 })();

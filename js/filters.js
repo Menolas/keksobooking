@@ -1,69 +1,88 @@
 'use strict';
 
 (function () {
-  /*
-  var usersOffers = [];
 
-  var updateUsersOffers = function () {
-    window.data.getUsersOffers(usersOffers);
-  };
-  */
+  var MIN_HOUSING_PRICE_LIMIT = 10000;
+  var MIDDLE_HOUSING_PRICE_LIMIT = 50000;
 
-  var filterContainerElement = document.querySelector('.map__filters-container');
+  var filteredOffers = [];
 
-  var housingType;
-  var housingTypeFilterElement = filterContainerElement.querySelector('select[name="housing-type"]');
+  var updateOffers = function (arrToFilter, filterObj) {
+    var filterKey = Object.keys(filterObj)[0];
+    var filterValue = filterObj[Object.keys(filterObj)[0]];
+    filterValue = (+filterValue) ? +filterValue : filterValue;
 
-  housingTypeFilterElement.addEventListener('change', function (event) {
-    var newHousingType = event.currentTarget.value;
-    housingType = newHousingType;
-  });
-
-  var housingPrice;
-  var housingPriceFilterElement = filterContainerElement.querySelector('select[name="housing-price"]');
-
-  housingPriceFilterElement.addEventListener('change', function (event) {
-    var newHousingPrice = event.currentTarget.value;
-    housingPrice = newHousingPrice;
-  });
-
-  var housingRooms;
-  var housingRoomsFilterElement = filterContainerElement.querySelector('select[name="housing-rooms"]');
-
-  housingRoomsFilterElement.addEventListener('change', function (event) {
-    var newHousingRooms = event.currentTarget.value;
-    housingRooms = newHousingRooms;
-  });
-
-  var housingGuests;
-  var housingGuestsFilterElement = filterContainerElement.querySelector('select[name="housing-guests"]');
-
-  housingGuestsFilterElement.addEventListener('change', function (event) {
-    var newHousingGuests = event.currentTarget.value;
-    housingGuests = newHousingGuests;
-  });
-  
-  var housingFeatures = [];
-  var housingFeaturesFilterElementContainer = filterContainerElement.querySelector('.features');
-
-  housingFeaturesFilterElementContainer.addEventListener('change', function (event) {
-    var target = event.target;
-    while (target !== event.currentTarget) {
-      if (target.tagName.toLowerCase() === 'input') {
-        var housingFeature = event.currentTarget.value;
-        housingFeatures.push(housingFeature);
-      }
-      target = target.parentNode;
+    if (filterValue === 'any') {
+      filteredOffers = arrToFilter;
+      return;
     }
-    console.log(housingFeatures);
+
+    filteredOffers = arrToFilter.filter(function (item) {
+      if (filterValue === 'lower than 10000') {
+        return item.offer.price <= MIN_HOUSING_PRICE_LIMIT;
+      } else if (filterValue === 'from 10000 to 50000') {
+        return item.offer.price >= MIN_HOUSING_PRICE_LIMIT && item.offer.price <= MIDDLE_HOUSING_PRICE_LIMIT;
+      } else if (filterValue === 'from 50000') {
+        return item.offer.price >= MIDDLE_HOUSING_PRICE_LIMIT;
+      } else if (Array.isArray(item.offer[filterKey])) {
+        return item.offer[filterKey].indexOf(filterValue) !== -1;
+      }
+
+      return item.offer[filterKey] === filterValue;
+    });
+  };
+
+  var findDuplicateFilter = function (filters, filterToFind) {
+    var index = -1;
+
+    for (var i = 0; i < filters.length; i++) {
+      if (filters[i][filterToFind]) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  };
+
+  var filterForm = document.querySelector('.map__filters');
+  var userFilters = [];
+
+  var collectFilters = function (e) {
+    var housingFeature = {};
+    housingFeature[e.target.name] = e.target.value;
+
+    if (e.target.tagName.toLowerCase() === 'select') {
+      var duplicateIndex = findDuplicateFilter(userFilters, e.target.name);
+
+      if (duplicateIndex !== -1) {
+        userFilters.splice(duplicateIndex, 1, housingFeature);
+        return;
+      }
+    } else if (e.target.type === 'checkbox' && !e.target.checked) {
+      userFilters.splice(userFilters.indexOf(e.target.name), 1);
+      return;
+    }
+
+    userFilters.push(housingFeature);
+  };
+
+  filterForm.addEventListener('change', function (event) {
+    window.card.closePopup();
+
+    collectFilters(event);
+
+    for (var i = 0; i < userFilters.length; i++) {
+      var hotels = (i === 0) ? window.data.usersOffers : filteredOffers;
+
+      updateOffers(hotels, userFilters[i]);
+    }
+
+    window.debounce(window.pin.removeOldPins());
+    window.data.usersOffersChanges = false;
+    window.debounce(window.pin.renderSimilarPins(filteredOffers));
+    window.pin.similarPins.addEventListener('click', function (evt) {
+      window.map.renderPinCard(evt, filteredOffers);
+    });
   });
 
-  var successHandler = function (offers) {
-    window.data.getUsersOffers(offers);
-  };
-
-  window.backend.load(successHandler, window.backend.errorHandler);
-  window.filters = {
-    filterContainerElement: filterContainerElement
-  };
 })();

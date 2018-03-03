@@ -32,28 +32,28 @@
 
     <div class="map__filters-container">
       <form action="#" class="map__filters" autocomplete="off">
-        <select name="housing-type" id="housing-type" class="map__filter">
+        <select name="type" id="housing-type" class="map__filter">
           <option value="any" selected>Любой тип жилья</option>
           <option value="flat">Квартира</option>
           <option value="house">Дом</option>
           <option value="bungalo">Сарай</option>
         </select>
 
-        <select name="housing-price" id="housing-price" class="map__filter">
+        <select name="price" id="housing-price" class="map__filter">
           <option value="any" selected>Любая</option>
-          <option value="middle">10000 - 50000&#x20bd;</option>
-          <option value="low">до 10000&#x20bd;</option>
-          <option value="high">от 50000&#x20bd;</option>
+          <option value="from 10000 to 50000">10000 - 50000 &#x20bd;</option>
+          <option value="lower than 10000">до 10000 &#x20bd;</option>
+          <option value="from 50000">от 50000 &#x20bd;</option>
         </select>
 
-        <select name="housing-rooms" id="housing-rooms" class="map__filter">
+        <select name="rooms" id="housing-rooms" class="map__filter">
           <option value="any" selected>Любое число комнат</option>
           <option value="1">Одна комната</option>
           <option value="2">Две комнаты</option>
           <option value="3">Три комнаты</option>
         </select>
 
-        <select name="housing-guests" id="housing-guests" class="map__filter">
+        <select name="guests" id="housing-guests" class="map__filter">
           <option value="any" selected>Любое число гостей</option>
           <option value="1">Один гость</option>
           <option value="2">Два гостя</option>
@@ -105,7 +105,7 @@
 
       <fieldset class="form__element form__element--wide">
         <label for="title">Заголовок объявления</label>
-        <input class="fill-input" id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" 
+        <input class="fill-input" id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио"
                minlength="30" maxlength="100"
                required>
       </fieldset>
@@ -127,8 +127,8 @@
 
       <fieldset class="form__element">
         <label for="price">Цена за ночь, руб.</label>
-        <input class="fill-input" id="price" name="price" type="number" placeholder="5000" 
-               max="1000000" required>
+        <input class="fill-input" id="price" name="price" type="number" placeholder="5000"
+               min="0" max="1000000" required>
       </fieldset>
 
       <fieldset class="form__element">
@@ -254,11 +254,11 @@
 <script src="js/backend.js"></script>
 <script src="js/util.js"></script>
 <script src="js/data.js"></script>
-<script src="js/filters.js"></script>
 <script src="js/pin.js"></script>
 <script src="js/card.js"></script>
 <script src="js/form.js"></script>
 <script src="js/map.js"></script>
+<script src="js/filters.js"></script>
 
 </body>
 </html>
