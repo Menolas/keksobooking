@@ -3,6 +3,7 @@
 (function () {
 
   var usersOffers = [];
+  var userOffersChanges = false;
 
   var getUsersOffers = function (offers) {
     for (var i = 0; i < offers.length; i++) {
@@ -35,6 +36,7 @@
 
   var successHandler = function (data) {
     getUsersOffers(data);
+    userOffersChanges = true;
   };
 
   var errorHandler = function (errorMessage) {
@@ -50,7 +52,8 @@
   window.backend.load(successHandler, errorHandler);
 
   window.data = {
-    usersOffers: usersOffers
+    usersOffers: usersOffers,
+    userOffersChanges: userOffersChanges
   };
 
 })();

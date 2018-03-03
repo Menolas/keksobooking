@@ -77,12 +77,9 @@
       updateOffers(hotels, userFilters[i]);
     }
 
-    console.log(filteredOffers);
     window.debounce(window.pin.removeOldPins());
+    window.data.usersOffersChanges = false;
     window.debounce(window.pin.renderSimilarPins(filteredOffers));
-    window.pin.similarPins.removeEventListener('click', function (evt) {
-      window.map.renderPinCard(evt, window.data.usersOffers);
-    });
     window.pin.similarPins.addEventListener('click', function (evt) {
       window.map.renderPinCard(evt, filteredOffers);
     });

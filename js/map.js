@@ -37,9 +37,19 @@
     }
   };
 
-  window.pin.similarPins.addEventListener('click', function (evt) {
-    renderPinCard(evt, window.data.usersOffers);
-  });
+  var getTheHousingCard = function () {
+    if (window.data.usersOffersChanges) {
+      window.pin.similarPins.addEventListener('click', function (evt) {
+        renderPinCard(evt, window.data.usersOffers);
+      });
+    } else {
+      window.pin.similarPins.removeEventListener('click', function (evt) {
+        renderPinCard(evt, window.data.usersOffers);
+      });
+    }
+  };
+
+  getTheHousingCard();
 
   offerHandle.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
