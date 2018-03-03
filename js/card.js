@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var SYMBOL_OF_RUBLE = String.fromCharCode(8381);
 
   var userMap = document.querySelector('.map');

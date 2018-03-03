@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var MAX_SIMILAR_OFFERS = 5;
   var PIN_WIDTH = 40;
   var PIN_HEIGHT = 40;

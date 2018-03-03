@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var URL_LOAD = 'https://js.dump.academy/keksobooking/data';
   var URL_SAVE = 'https://js.dump.academy/keksobooking';
   var xhr = new XMLHttpRequest();

@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var PIN_MAIN_WIDTH = 62;
   var PIN_MAIN_HEIGHT = 80;
   var MAX_Y = 500;

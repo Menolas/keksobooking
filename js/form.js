@@ -182,12 +182,6 @@
       features[i].checked = false;
     }
   };
-  /*
-  var resetForm = function () {
-    for (var i = 0; i < formElement.length; i++) {
-      formElement[i].reset();
-    }
-  };*/
 
   var getConditionBeforeActivation = function () {
     window.card.closePopup();
