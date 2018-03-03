@@ -12,7 +12,7 @@
   var onMainPinClick = function () {
     window.card.userMap.classList.remove('map--faded');
     window.form.enableForm();
-    window.pin.renderSimilarPins(window.filters.usersOffers);
+    window.pin.renderSimilarPins(window.data.usersOffers);
   };
 
   offerHandle.addEventListener('mouseup', function () {
@@ -24,22 +24,22 @@
     window.util.isEnterEvent(evt, onMainPinClick);
   });
 
-  var renderPinCard = function (array) {
-    window.pin.similarPins.addEventListener('click', function (evt) {
-      var target = evt.target;
-      while (target !== evt.currentTarget) {
-        if (target.className === 'map__pin') {
-          window.pin.getHighlight(target);
-          var i = target.getAttribute('data-position');
-          window.card.getPopup(array[i]);
-          return;
-        }
-        target = target.parentNode;
+  var renderPinCard = function (evt, array) {
+    var target = evt.target;
+    while (target !== evt.currentTarget) {
+      if (target.className === 'map__pin') {
+        window.pin.getHighlight(target);
+        var i = target.getAttribute('data-position');
+        window.card.getPopup(array[i]);
+        return;
       }
-    });
+      target = target.parentNode;
+    }
   };
 
-  renderPinCard(window.filters.usersOffers);
+  window.pin.similarPins.addEventListener('click', function (evt) {
+    renderPinCard(evt, window.data.usersOffers);
+  });
 
   offerHandle.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
