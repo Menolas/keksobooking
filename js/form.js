@@ -77,6 +77,8 @@
 
   offerTypeInput.addEventListener('change', checkMinPrice);
 
+  offerPriceInput.addEventListener('change', checkMinPrice);
+
   var checkTimeOfCheckIn = function () {
     checkOutInput.value = checkInInput.value;
   };
@@ -141,8 +143,8 @@
   });
 
   var getRedBorder = function (input) {
-    if(invalidInput) {
-    input.style.border = '2px solid red';
+    if (invalidInput) {
+      input.style.border = '2px solid red';
     } else {
       input.style.border = '';
     }
@@ -180,6 +182,12 @@
       features[i].checked = false;
     }
   };
+  /*
+  var resetForm = function () {
+    for (var i = 0; i < formElement.length; i++) {
+      formElement[i].reset();
+    }
+  };*/
 
   var getConditionBeforeActivation = function () {
     window.card.closePopup();
