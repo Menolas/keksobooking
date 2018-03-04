@@ -5,9 +5,9 @@
   var PIN_MAIN_WIDTH = 62;
   var PIN_MAIN_HEIGHT = 80;
   var MAX_Y = 500;
-  var MIN_Y = 100;
-  var MAX_X = 1150;
-  var MIN_X = 50;
+  var MIN_Y = 150;
+  var MAX_X = 1200;
+  var MIN_X = 0;
   var offerHandle = window.card.userMap.querySelector('.map__pin--main');
   var offerXCoord = offerHandle.offsetLeft;
   var offerYCoord = offerHandle.offsetTop;
