@@ -68,8 +68,8 @@
         userFilters.splice(duplicateIndex, 1, housingFeature);
         return;
       }
+    }
 
-    /*
     if (e.target.value === 'any') {
       duplicateIndex = findDuplicateFilter(userFilters, e.target.name);
 
@@ -78,7 +78,6 @@
         return;
       }
       return;
-      */
 
     } else if (e.target.type === 'checkbox' && !e.target.checked) {
       userFilters.splice(userFilters.indexOf(e.target.name), 1);
@@ -100,8 +99,8 @@
     }
 
     window.data.usersOffers = filteredOffers;
-    window.debounce(window.pin.removeOldPins());
-    window.debounce(window.pin.renderSimilarPins(filteredOffers));
+    window.debouncetimeout.debounce(window.pin.removeOldPins());
+    window.debouncetimeout.debounce(window.pin.renderSimilarPins(filteredOffers));
     window.data.usersOffers = savedUsersOffers;
   });
 
