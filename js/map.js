@@ -16,6 +16,8 @@
     window.card.userMap.classList.remove('map--faded');
     window.form.enableForm();
     window.pin.renderSimilarPins(window.data.usersOffers);
+    window.filters.getFiltersStartValues();
+    window.form.cleanFeatures(window.filters.filtersFeaturesElements);
   };
 
   offerHandle.addEventListener('mouseup', function () {

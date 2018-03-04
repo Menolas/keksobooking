@@ -238,7 +238,8 @@
   window.form = {
     offerAddressInput: offerAddressInput,
     form: form,
-    enableForm: enableForm
+    enableForm: enableForm,
+    cleanFeatures: cleanFeatures
   };
 
 })();
