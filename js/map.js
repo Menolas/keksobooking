@@ -91,8 +91,4 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  window.map = {
-    renderPinCard: renderPinCard
-  };
-
 })();

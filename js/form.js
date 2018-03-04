@@ -235,7 +235,6 @@
 
   window.form = {
     offerAddressInput: offerAddressInput,
-    form: form,
     enableForm: enableForm,
     cleanFeatures: cleanFeatures
   };

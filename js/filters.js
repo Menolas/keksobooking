@@ -89,6 +89,7 @@
 
   filterForm.addEventListener('change', function (event) {
     window.card.closePopup();
+    window.data.usersOffers = savedUsersOffers;
 
     collectFilters(event);
 
@@ -98,15 +99,13 @@
       updateOffers(hotels, userFilters[i]);
     }
 
-    window.data.usersOffers = filteredOffers;
-
     var renderNewPins = function () {
-      window.pin.renderSimilarPins(window.data.usersOffers);
+      window.pin.renderSimilarPins(filteredOffers);
     };
 
     window.pin.removeOldPins();
+    window.data.usersOffers = filteredOffers;
     window.debounce(renderNewPins);
-    window.data.usersOffers = savedUsersOffers;
   });
 
   window.filters = {
