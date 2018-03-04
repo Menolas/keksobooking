@@ -48,6 +48,7 @@
   var putStartValues = function () {
     for (var i = 0; i < fillInput.length; i++) {
       fillInput[i].value = startInputValues[i];
+      fillInput[i].placeholder = '';
     }
   };
 

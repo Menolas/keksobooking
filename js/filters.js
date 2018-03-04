@@ -98,9 +98,13 @@
       updateOffers(hotels, userFilters[i]);
     }
 
+    var renderNewPins = function () {
+      window.pin.renderSimilarPins(filteredOffers);
+    };
+
     window.data.usersOffers = filteredOffers;
-    window.debouncetimeout.debounce(window.pin.removeOldPins());
-    window.debouncetimeout.debounce(window.pin.renderSimilarPins(filteredOffers));
+    window.pin.removeOldPins();
+    window.debounce(renderNewPins);
     window.data.usersOffers = savedUsersOffers;
   });
 
