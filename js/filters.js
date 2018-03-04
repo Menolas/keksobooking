@@ -5,6 +5,7 @@
   var MIN_HOUSING_PRICE_LIMIT = 10000;
   var MIDDLE_HOUSING_PRICE_LIMIT = 50000;
 
+  var savedUsersOffers = window.data.usersOffers;
   var filteredOffers = [];
 
   var updateOffers = function (arrToFilter, filterObj) {
@@ -58,6 +59,18 @@
         userFilters.splice(duplicateIndex, 1, housingFeature);
         return;
       }
+
+    /*
+    if (e.target.value === 'any') {
+      duplicateIndex = findDuplicateFilter(userFilters, e.target.name);
+
+      if (duplicateIndex !== -1) {
+        userFilters.splice(duplicateIndex, 1, housingFeature);
+        return;
+      }
+      return;
+      */
+
     } else if (e.target.type === 'checkbox' && !e.target.checked) {
       userFilters.splice(userFilters.indexOf(e.target.name), 1);
       return;
@@ -80,6 +93,7 @@
     window.data.usersOffers = filteredOffers;
     window.debounce(window.pin.removeOldPins());
     window.debounce(window.pin.renderSimilarPins(filteredOffers));
+    window.data.usersOffers = savedUsersOffers;
   });
 
 })();
