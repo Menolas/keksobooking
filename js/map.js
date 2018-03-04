@@ -6,6 +6,8 @@
   var PIN_MAIN_HEIGHT = 80;
   var MAX_Y = 500;
   var MIN_Y = 100;
+  var MAX_X = 1150;
+  var MIN_X = 50;
   var offerHandle = window.card.userMap.querySelector('.map__pin--main');
   var offerXCoord = offerHandle.offsetLeft;
   var offerYCoord = offerHandle.offsetTop;
@@ -67,8 +69,9 @@
       if (offerHandleTop > MIN_Y && offerHandleTop < MAX_Y) {
         offerHandle.style.top = offerHandleTop + 'px';
       }
-
-      offerHandle.style.left = offerHandleLeft + 'px';
+      if (offerHandleLeft > MIN_X && offerHandleLeft < MAX_X) {
+        offerHandle.style.left = offerHandleLeft + 'px';
+      }
 
       offerXCoord = offerHandleLeft + PIN_MAIN_WIDTH / 2;
       offerYCoord = offerHandleTop + PIN_MAIN_HEIGHT;
