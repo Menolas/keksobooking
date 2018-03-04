@@ -16,6 +16,8 @@
     '3': '3',
     '100': '0'
   };
+  var RED_BORDER = '2px solid red';
+  var NO_BORDER = '';
   var offerHandle = window.card.userMap.querySelector('.map__pin--main');
   var offerXCoord = offerHandle.offsetLeft;
   var offerYCoord = offerHandle.offsetTop;
@@ -30,11 +32,11 @@
   var offerRoomNumberInput = form.querySelector('select[name="rooms"]');
   var offerNumberOfGuestsInput = form.querySelector('select[name="capacity"]');
   var offerAddressInput = form.querySelector('input[name="address"]');
-  var invalidInput = false;
 
   offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
 
   var startInputValues = [];
+
   var getStartInputValues = function () {
     for (var i = 0; i < fillInput.length; i++) {
       var startInputValueItem = fillInput[i].value;
@@ -68,6 +70,10 @@
     for (var i = 0; i < formElement.length; i++) {
       formElement[i].removeAttribute('disabled');
     }
+  };
+
+  var getBorder = function (input, borderStyle) {
+    input.style.border = borderStyle;
   };
 
   var checkMinPrice = function (evt) {
@@ -142,17 +148,8 @@
     setValidValueForGuest();
   });
 
-  var getRedBorder = function (input) {
-    if (invalidInput) {
-      input.style.border = '2px solid red';
-    } else {
-      input.style.border = '';
-    }
-  };
-
   offerTitleInput.addEventListener('invalid', function () {
-    invalidInput = true;
-    getRedBorder(offerTitleInput);
+    getBorder(offerTitleInput, RED_BORDER);
     if (offerTitleInput.validity.tooShort) {
       offerTitleInput.setCustomValidity('Заголовок объявления должен состоять минимум из 30 символов');
     } else if (offerTitleInput.validity.tooLong) {
@@ -165,18 +162,18 @@
   });
 
   offerPriceInput.addEventListener('invalid', function () {
-    invalidInput = true;
-    getRedBorder(offerPriceInput);
+    getBorder(offerPriceInput, RED_BORDER);
     if (offerPriceInput.validity.rangeUnderflow) {
       offerPriceInput.setCustomValidity('Цена на этот объект не может быть ниже ' + TYPES_AND_PRICES[offerTypeInput.value]);
-    } else if (offerTitleInput.validity.valueMissing) {
-      offerTitleInput.setCustomValidity('Обязательное поле');
+    } else if (offerPriceInput.validity.valueMissing) {
+      offerPriceInput.setCustomValidity('Обязательное поле');
     } else {
-      offerTitleInput.setCustomValidity('');
+      offerPriceInput.setCustomValidity('');
     }
   });
 
   var features = form.querySelectorAll('.features input');
+
   var cleanFeatures = function () {
     for (var i = 0; i < features.length; i++) {
       features[i].checked = false;
@@ -188,6 +185,8 @@
     offerHandle.style = '';
     putStartValues();
     cleanFeatures();
+    getBorder(offerTitleInput, NO_BORDER);
+    getBorder(offerPriceInput, NO_BORDER);
     window.card.userMap.classList.add('map--faded');
     window.pin.removeOldPins();
     putDisabled();

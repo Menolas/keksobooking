@@ -77,12 +77,9 @@
       updateOffers(hotels, userFilters[i]);
     }
 
+    window.data.usersOffers = filteredOffers;
     window.debounce(window.pin.removeOldPins());
-    window.data.usersOffersChanges = false;
     window.debounce(window.pin.renderSimilarPins(filteredOffers));
-    window.pin.similarPins.addEventListener('click', function (evt) {
-      window.map.renderPinCard(evt, filteredOffers);
-    });
   });
 
 })();
