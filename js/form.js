@@ -174,9 +174,9 @@
 
   var features = form.querySelectorAll('.features input');
 
-  var cleanFeatures = function () {
-    for (var i = 0; i < features.length; i++) {
-      features[i].checked = false;
+  var cleanFeatures = function (array) {
+    for (var i = 0; i < array.length; i++) {
+      array[i].checked = false;
     }
   };
 
@@ -184,7 +184,9 @@
     window.card.closePopup();
     offerHandle.style = '';
     putStartValues();
-    cleanFeatures();
+    window.filters.getFiltersStartValues();
+    cleanFeatures(features);
+    cleanFeatures(window.filters.filtersFeaturesElements);
     getBorder(offerTitleInput, NO_BORDER);
     getBorder(offerPriceInput, NO_BORDER);
     window.card.userMap.classList.add('map--faded');
