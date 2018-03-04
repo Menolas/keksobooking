@@ -3,7 +3,7 @@
 (function () {
 
   var TYPES_AND_PRICES = {
-    'bungalow': 0,
+    'bungalo': 0,
     'flat': 1000,
     'house': 5000,
     'palace': 10000
@@ -48,7 +48,6 @@
   var putStartValues = function () {
     for (var i = 0; i < fillInput.length; i++) {
       fillInput[i].value = startInputValues[i];
-      fillInput[i].placeholder = '';
     }
   };
 
@@ -60,7 +59,6 @@
   };
 
   var getStarted = function () {
-    getStartInputValues();
     putDisabled();
   };
 
@@ -71,20 +69,15 @@
     for (var i = 0; i < formElement.length; i++) {
       formElement[i].removeAttribute('disabled');
     }
+
+    offerPriceInput.setAttribute('min', TYPES_AND_PRICES[offerTypeInput.value]);
+    startInputValues.length = 0;
+    getStartInputValues();
   };
 
   var getBorder = function (input, borderStyle) {
     input.style.border = borderStyle;
   };
-
-  var checkMinPrice = function (evt) {
-    var target = evt.currentTarget;
-    offerPriceInput.setAttribute('min', TYPES_AND_PRICES[target.value]);
-  };
-
-  offerTypeInput.addEventListener('change', checkMinPrice);
-
-  offerPriceInput.addEventListener('change', checkMinPrice);
 
   var checkTimeOfCheckIn = function () {
     checkOutInput.value = checkInInput.value;
@@ -181,7 +174,7 @@
     }
   };
 
-  var getConditionBeforeActivation = function () {
+  var setConditionBeforeActivation = function () {
     window.card.closePopup();
     offerHandle.style = '';
     putStartValues();
@@ -223,16 +216,20 @@
   };
 
   var formSuccessHandler = function () {
-    getConditionBeforeActivation();
+    setConditionBeforeActivation();
   };
 
   form.addEventListener('submit', function (evt) {
+    if (!form.checkValidity()) {
+      return;
+    }
+
     window.backend.save(new FormData(form), formSuccessHandler, submitErrorHandler);
     evt.preventDefault();
   });
 
   form.addEventListener('reset', function (evt) {
-    getConditionBeforeActivation();
+    setConditionBeforeActivation();
     evt.preventDefault();
   });
 
@@ -244,3 +241,4 @@
   };
 
 })();
+
