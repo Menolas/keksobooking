@@ -1,9 +1,8 @@
 'use strict';
 
 (function () {
-
-  var PIN_MAIN_WIDTH = 62;
-  var PIN_MAIN_HEIGHT = 80;
+  var MAIN_PIN_WIDTH = 62;
+  var MAIN_PIN_HEIGHT = 80;
   var MAX_Y = 500;
   var MIN_Y = 150;
   var MAX_X = 1200;
@@ -14,7 +13,6 @@
 
   var successHandler = function (data) {
     window.data.getUsersOffers(data);
-    window.pin.renderSimilarPins(data);
   };
 
   var errorHandler = function (errorMessage) {
@@ -27,19 +25,19 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  
+  window.backend.load(successHandler, errorHandler);
 
   var onMainPinClick = function () {
     window.card.userMap.classList.remove('map--faded');
     window.form.enableForm();
-    window.backend.load(successHandler, errorHandler);
     window.filters.getFiltersStartValues();
     window.form.cleanFeatures(window.filters.filtersFeaturesElements);
   };
 
   offerHandle.addEventListener('mouseup', function () {
-    window.pin.removeOldPins();
     onMainPinClick();
+    window.pin.removeOldPins();
+    window.pin.renderSimilarPins(window.data.usersOffers);
   });
 
   offerHandle.addEventListener('keydown', function (evt) {
@@ -92,9 +90,9 @@
         offerHandle.style.left = offerHandleLeft + 'px';
       }
 
-      offerXCoord = offerHandleLeft + PIN_MAIN_WIDTH / 2;
-      offerYCoord = offerHandleTop + PIN_MAIN_HEIGHT;
-      window.form.offerAddressInput.value = 'x: ' + offerXCoord + ', y: ' + offerYCoord;
+      offerXCoord = offerHandleLeft + MAIN_PIN_WIDTH / 2;
+      offerYCoord = offerHandleTop + MAIN_PIN_HEIGHT;
+      window.form.offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
     };
 
     var onMouseUp = function (upEvt) {

@@ -69,7 +69,6 @@
     for (var i = 0; i < formElement.length; i++) {
       formElement[i].removeAttribute('disabled');
     }
-
     offerPriceInput.setAttribute('min', TYPES_AND_PRICES[offerTypeInput.value]);
     startInputValues.length = 0;
     getStartInputValues();
