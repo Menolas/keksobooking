@@ -13,7 +13,8 @@
   var offerYCoord = offerHandle.offsetTop;
 
   var successHandler = function (data) {
-    getUsersOffers(data);
+    window.data.getUsersOffers(data);
+    window.pin.renderSimilarPins(data);
   };
 
   var errorHandler = function (errorMessage) {
@@ -32,7 +33,6 @@
     window.card.userMap.classList.remove('map--faded');
     window.form.enableForm();
     window.backend.load(successHandler, errorHandler);
-    window.pin.renderSimilarPins(window.data.usersOffers);
     window.filters.getFiltersStartValues();
     window.form.cleanFeatures(window.filters.filtersFeaturesElements);
   };
