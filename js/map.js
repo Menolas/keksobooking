@@ -12,9 +12,26 @@
   var offerXCoord = offerHandle.offsetLeft;
   var offerYCoord = offerHandle.offsetTop;
 
+  var successHandler = function (data) {
+    getUsersOffers(data);
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'position: absolute; z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  
+
   var onMainPinClick = function () {
     window.card.userMap.classList.remove('map--faded');
     window.form.enableForm();
+    window.backend.load(successHandler, errorHandler);
     window.pin.renderSimilarPins(window.data.usersOffers);
     window.filters.getFiltersStartValues();
     window.form.cleanFeatures(window.filters.filtersFeaturesElements);

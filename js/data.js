@@ -33,23 +33,8 @@
     return usersOffers;
   };
 
-  var successHandler = function (data) {
-    getUsersOffers(data);
-  };
-
-  var errorHandler = function (errorMessage) {
-    var node = document.createElement('div');
-    node.style = 'position: absolute; z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
-  };
-
-  window.backend.load(successHandler, errorHandler);
-
   window.data = {
+    getUsersOffers: getUsersOffers,
     usersOffers: usersOffers
   };
 
