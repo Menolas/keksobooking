@@ -33,12 +33,12 @@
     window.filters.getFiltersStartValues();
     window.form.cleanFeatures(window.filters.filtersFeaturesElements);
   };
-
+  /*
   offerHandle.addEventListener('mouseup', function () {
     onMainPinClick();
     window.pin.removeOldPins();
     window.pin.renderSimilarPins(window.data.usersOffers);
-  });
+  });*/
 
   offerHandle.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, onMainPinClick);
@@ -97,6 +97,9 @@
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
+      onMainPinClick();
+      window.pin.removeOldPins();
+      window.pin.renderSimilarPins(window.data.usersOffers);
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
