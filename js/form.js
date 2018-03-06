@@ -175,8 +175,8 @@
 
   var setConditionBeforeActivation = function () {
     window.card.closePopup();
-    offerHandle.style = '';
     putStartValues();
+    offerHandle.style = '';
     window.filters.getFiltersStartValues();
     cleanFeatures(features);
     cleanFeatures(window.filters.filtersFeaturesElements);
@@ -185,6 +185,7 @@
     window.card.userMap.classList.add('map--faded');
     window.pin.removeOldPins();
     putDisabled();
+    window.map.loadCount = 0;
   };
 
   var submitErrorMessage = document.createElement('div');
@@ -218,18 +219,33 @@
     setConditionBeforeActivation();
   };
 
-  form.addEventListener('submit', function (evt) {
+  var onSubmitEvent = function (evt) {
     if (!form.checkValidity()) {
       return;
     }
-
     window.backend.save(new FormData(form), formSuccessHandler, submitErrorHandler);
     evt.preventDefault();
+  };
+
+  form.addEventListener('submit', function (evt) {
+    onSubmitEvent(evt);
   });
 
-  form.addEventListener('reset', function (evt) {
+  form.addEventListener('keydown', function (evt) {
+    window.util.isEnterEvent(evt, onSubmitEvent);
+  });
+
+  var onResetEvent = function (evt) {
     setConditionBeforeActivation();
     evt.preventDefault();
+  };
+
+  form.addEventListener('reset', function (evt) {
+    onResetEvent(evt);
+  });
+
+  form.addEventListener('keydown', function (evt) {
+    window.util.isEnterEvent(evt, onResetEvent);
   });
 
   window.form = {
@@ -239,4 +255,5 @@
   };
 
 })();
+
 
