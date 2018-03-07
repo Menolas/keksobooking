@@ -31,8 +31,8 @@
   var offerRoomNumberInput = form.querySelector('select[name="rooms"]');
   var offerNumberOfGuestsInput = form.querySelector('select[name="capacity"]');
   var offerAddressInput = document.querySelector('input[name="address"]');
-  var offerXCoord = offerHandle.offsetLeft + window.pin.OFFER_HANDLE_CORRECT_X;
-  var offerYCoord = offerHandle.offsetTop + window.pin.OFFER_HANDLE_CORRECT_Y;
+  var offerXCoord = offerHandle.offsetLeft;
+  var offerYCoord = offerHandle.offsetTop;
 
   offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
 
