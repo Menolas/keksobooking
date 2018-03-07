@@ -18,6 +18,7 @@
   };
   var RED_BORDER = '2px solid red';
   var NO_BORDER = '';
+
   var offerHandle = window.card.userMap.querySelector('.map__pin--main');
   var form = document.querySelector('.notice__form');
   var formElement = form.querySelectorAll('.form__element');
@@ -30,8 +31,8 @@
   var offerRoomNumberInput = form.querySelector('select[name="rooms"]');
   var offerNumberOfGuestsInput = form.querySelector('select[name="capacity"]');
   var offerAddressInput = document.querySelector('input[name="address"]');
-  var offerXCoord = offerHandle.offsetLeft + window.data.OFFER_HANDLE_CORRECT_X;
-  var offerYCoord = offerHandle.offsetTop + window.data.OFFER_HANDLE_CORRECT_Y;
+  var offerXCoord = offerHandle.offsetLeft + window.pin.OFFER_HANDLE_CORRECT_X;
+  var offerYCoord = offerHandle.offsetTop + window.pin.OFFER_HANDLE_CORRECT_Y;
 
   offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
 
@@ -236,6 +237,7 @@
   });
 
   form.addEventListener('reset', function (evt) {
+    location.reload();
     setConditionBeforeActivation();
     evt.preventDefault();
   });

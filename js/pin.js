@@ -1,19 +1,32 @@
 'use strict';
 
 (function () {
-
+  var MAP_PIN_TAIL_HEIGHT = 22;
+  var MAP_PIN_ELEMENT_IMG = 58;
+  var MAIN_PIN_HEIGHT = MAP_PIN_ELEMENT_IMG + MAP_PIN_TAIL_HEIGHT;
+  var MAIN_PIN_WIDTH = 65;
+  var MAP_PIN_ELEMENT_HEIGHT = 65;
+  var MAP_PIN_TRANSLATE_X = MAIN_PIN_WIDTH / 2;
+  var MAP_PIN_TRANSLATE_Y = MAP_PIN_ELEMENT_HEIGHT / 2;
+  var MAP_PIN_TAIL_TRANSLATE = 6;
+  var OFFER_HANDLE_CORRECT_X = Math.round(MAIN_PIN_WIDTH / 2 - MAP_PIN_TRANSLATE_X);
+  var OFFER_HANDLE_CORRECT_Y = Math.round(MAIN_PIN_HEIGHT - MAP_PIN_TRANSLATE_Y - MAP_PIN_TAIL_TRANSLATE);
+  var MAP_PIN_SMALL_WIDTH = 50;
+  var MAP_PIN_SMALL_HEIGHT = 70;
+  var MAP_PIN_SMALL_TRANSLATE_X = MAP_PIN_SMALL_WIDTH / 2;
+  var MAP_PIN_SMALL_TRANSLATE_Y = MAP_PIN_SMALL_HEIGHT / 2;
+  var MAP_PIN_SMALL_CORRECT_X = MAP_PIN_SMALL_WIDTH / 2 - MAP_PIN_SMALL_TRANSLATE_X;
+  var MAP_PIN_SMALL_CORRECT_Y = MAP_PIN_SMALL_HEIGHT - MAP_PIN_SMALL_TRANSLATE_Y;
   var MAX_SIMILAR_OFFERS = 5;
-  var PIN_WIDTH = 40;
-  var PIN_HEIGHT = 40;
-  var PIN_TAIL = 18;
+
   var similarPins = document.querySelector('.map__pins');
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 
   var renderPin = function (userOffer, position) {
     var pinElement = pinTemplate.cloneNode(true);
 
-    pinElement.style.left = (userOffer.location.x - PIN_WIDTH / 2) + 'px';
-    pinElement.style.top = (userOffer.location.y - (PIN_HEIGHT + PIN_TAIL)) + 'px';
+    pinElement.style.left = userOffer.location.x - MAP_PIN_SMALL_CORRECT_X + 'px';
+    pinElement.style.top = userOffer.location.y - MAP_PIN_SMALL_CORRECT_Y + 'px';
     pinElement.querySelector('img').src = userOffer.author.avatar;
     pinElement.setAttribute('data-position', position);
 
@@ -53,7 +66,9 @@
       }
       similarPins.appendChild(fragment);
     },
-    similarPins: similarPins
+    similarPins: similarPins,
+    OFFER_HANDLE_CORRECT_X: OFFER_HANDLE_CORRECT_X,
+    OFFER_HANDLE_CORRECT_Y: OFFER_HANDLE_CORRECT_Y
   };
 
 })();

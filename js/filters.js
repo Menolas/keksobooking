@@ -8,6 +8,7 @@
   var filterForm = document.querySelector('.map__filters');
   var filterFormElements = filterForm.querySelectorAll('.map__filter');
   var filtersFeaturesElements = filterForm.querySelectorAll('input[name="features"]');
+  var savedUsersOffers = window.data.usersOffers;
 
   var getFiltersStartValues = function () {
     for (var i = 0; i < filterFormElements.length; i++) {
@@ -15,7 +16,6 @@
     }
   };
 
-  var savedUsersOffers = window.data.usersOffers;
   var filteredOffers = [];
 
   var updateOffers = function (arrToFilter, filterObj) {
@@ -110,7 +110,8 @@
 
   window.filters = {
     getFiltersStartValues: getFiltersStartValues,
-    filtersFeaturesElements: filtersFeaturesElements
+    filtersFeaturesElements: filtersFeaturesElements,
+    userFilters: userFilters
   };
 
 })();

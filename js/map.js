@@ -1,10 +1,10 @@
 'use strict';
 
 (function () {
-  var MAX_X = 1200 - window.data.OFFER_HANDLE_CORRECT_X;
-  var MIN_X = 0 - window.data.OFFER_HANDLE_CORRECT_X;
-  var MAX_Y = 500 - window.data.OFFER_HANDLE_CORRECT_Y;
-  var MIN_Y = 150 - window.data.OFFER_HANDLE_CORRECT_Y;
+  var MAX_X = 1200 - window.pin.OFFER_HANDLE_CORRECT_X;
+  var MIN_X = 0 - window.pin.OFFER_HANDLE_CORRECT_X;
+  var MAX_Y = 500 - window.pin.OFFER_HANDLE_CORRECT_Y;
+  var MIN_Y = 150 - window.pin.OFFER_HANDLE_CORRECT_Y;
 
   var offerHandle = window.card.userMap.querySelector('.map__pin--main');
 
@@ -89,8 +89,8 @@
         offerHandle.style.left = offerHandleLeft + 'px';
       }
 
-      var offerXCoord = offerHandleLeft + window.data.OFFER_HANDLE_CORRECT_X;
-      var offerYCoord = offerHandleTop + window.data.OFFER_HANDLE_CORRECT_Y;
+      var offerXCoord = offerHandleLeft + window.pin.OFFER_HANDLE_CORRECT_X;
+      var offerYCoord = offerHandleTop + window.pin.OFFER_HANDLE_CORRECT_Y;
       window.form.offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
     };
 
