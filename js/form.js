@@ -19,11 +19,9 @@
   var RED_BORDER = '2px solid red';
   var NO_BORDER = '';
   var offerHandle = window.card.userMap.querySelector('.map__pin--main');
-  var offerXCoord = offerHandle.offsetLeft;
-  var offerYCoord = offerHandle.offsetTop;
   var form = document.querySelector('.notice__form');
   var formElement = form.querySelectorAll('.form__element');
-  var fillInput = form.querySelectorAll('.fill-input');
+  var fillInputs = form.querySelectorAll('.fill-input');
   var offerTitleInput = form.querySelector('input[name="title"]');
   var checkInInput = form.querySelector('select[name="timein"]');
   var checkOutInput = form.querySelector('select[name="timeout"]');
@@ -31,35 +29,44 @@
   var offerPriceInput = form.querySelector('input[name="price"]');
   var offerRoomNumberInput = form.querySelector('select[name="rooms"]');
   var offerNumberOfGuestsInput = form.querySelector('select[name="capacity"]');
-  var offerAddressInput = form.querySelector('input[name="address"]');
+  var offerAddressInput = document.querySelector('input[name="address"]');
+  var offerXCoord = offerHandle.offsetLeft + window.data.OFFER_HANDLE_CORRECT_X;
+  var offerYCoord = offerHandle.offsetTop + window.data.OFFER_HANDLE_CORRECT_Y;
 
   offerAddressInput.value = offerXCoord + ', ' + offerYCoord;
 
   var startInputValues = [];
 
   var getStartInputValues = function () {
-    for (var i = 0; i < fillInput.length; i++) {
-      var startInputValueItem = fillInput[i].value;
-      startInputValues.push(startInputValueItem);
-    }
+    [].forEach.call(fillInputs, function (input) {
+      startInputValues.push(input.value);
+    });
+
     return startInputValues;
   };
 
-  var putStartValues = function () {
-    for (var i = 0; i < fillInput.length; i++) {
-      fillInput[i].value = startInputValues[i];
-    }
+  var resetStartValues = function () {
+    [].forEach.call(fillInputs, function (input, i) {
+      input.value = startInputValues[i];
+    });
+
+    startInputValues.length = 0;
   };
 
-  var putDisabled = function () {
+  var setDisabled = function () {
     form.classList.add('notice__form--disabled');
     for (var i = 0; i < formElement.length; i++) {
       formElement[i].setAttribute('disabled', '');
     }
+    getStartInputValues();
+  };
+
+  var onOfferTypeChanged = function () {
+    offerPriceInput.min = TYPES_AND_PRICES[offerTypeInput.value];
   };
 
   var getStarted = function () {
-    putDisabled();
+    setDisabled();
   };
 
   getStarted();
@@ -70,8 +77,7 @@
       formElement[i].removeAttribute('disabled');
     }
     offerPriceInput.setAttribute('min', TYPES_AND_PRICES[offerTypeInput.value]);
-    startInputValues.length = 0;
-    getStartInputValues();
+    offerTypeInput.addEventListener('change', onOfferTypeChanged);
   };
 
   var getBorder = function (input, borderStyle) {
@@ -175,8 +181,8 @@
 
   var setConditionBeforeActivation = function () {
     window.card.closePopup();
-    putStartValues();
     offerHandle.style = '';
+    resetStartValues();
     window.filters.getFiltersStartValues();
     cleanFeatures(features);
     cleanFeatures(window.filters.filtersFeaturesElements);
@@ -184,7 +190,8 @@
     getBorder(offerPriceInput, NO_BORDER);
     window.card.userMap.classList.add('map--faded');
     window.pin.removeOldPins();
-    putDisabled();
+    setDisabled();
+    offerTypeInput.removeEventListener('change', onOfferTypeChanged);
     window.map.loadCount = 0;
   };
 
@@ -216,36 +223,21 @@
   };
 
   var formSuccessHandler = function () {
-    setConditionBeforeActivation();
-  };
-
-  var onSubmitEvent = function (evt) {
-    if (!form.checkValidity()) {
-      return;
-    }
-    window.backend.save(new FormData(form), formSuccessHandler, submitErrorHandler);
-    evt.preventDefault();
+    location.reload();
   };
 
   form.addEventListener('submit', function (evt) {
-    onSubmitEvent(evt);
-  });
+    if (!form.checkValidity()) {
+      return;
+    }
 
-  form.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, onSubmitEvent);
-  });
-
-  var onResetEvent = function (evt) {
-    setConditionBeforeActivation();
+    window.backend.save(new FormData(form), formSuccessHandler, submitErrorHandler);
     evt.preventDefault();
-  };
+  });
 
   form.addEventListener('reset', function (evt) {
-    onResetEvent(evt);
-  });
-
-  form.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, onResetEvent);
+    setConditionBeforeActivation();
+    evt.preventDefault();
   });
 
   window.form = {
@@ -255,5 +247,3 @@
   };
 
 })();
-
-
